@@ -771,6 +771,9 @@ body {
         <input type="password" id="managerPassword" placeholder="Enter manager password">
       </div>
       <button class="btn-primary" onclick="managerLogin()">View Dashboard →</button>
+      <div style="text-align:center;margin-top:1rem">
+        <button onclick="emergencyReset()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;text-decoration:underline">Forgot password? Reset to default</button>
+      </div>
     </div>
   </div>
 </div>
@@ -997,11 +1000,23 @@ async function pullPasswordsFromCloud() {
   try {
     const res = await fetch(url + '?action=fetch_passwords');
     const data = await res.json();
-    if (data && typeof data === 'object' && !data.error && !Array.isArray(data)) {
-      // Cloud wins — overwrite local passwords with cloud version
-      localStorage.setItem('dv_passwords', JSON.stringify(data));
+    if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && Object.keys(data).length > 0) {
+      const knownUsers = ['Manager','Onyinyechi Chinenye Precious','Angel Mbonu Chniaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
+      const hasRealPasswords = Object.keys(data).some(k => knownUsers.includes(k));
+      if (hasRealPasswords) {
+        const local = getPasswords();
+        const merged = Object.assign({}, local, data);
+        localStorage.setItem('dv_passwords', JSON.stringify(merged));
+      }
     }
   } catch(e) { /* silent fail */ }
+}
+
+function emergencyReset() {
+  if (confirm('This will reset ALL passwords back to default.\n\nManager → 1234\nWorkers → first name (lowercase)\n\nContinue?')) {
+    localStorage.removeItem('dv_passwords');
+    showToast('✅ Passwords reset to default. Manager password is 1234');
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -1057,7 +1072,8 @@ function savePasswordChange() {
 }
 
 // ── Password Manager (manager view) ───────────────────────────────
-function openPasswordManager() {
+async function openPasswordManager() {
+  await pullPasswordsFromCloud();
   renderPasswordManager();
   document.getElementById('modal-pw-manager').style.display = 'flex';
 }
@@ -1127,7 +1143,6 @@ async function pullFromCloud() {
 
     const merged = Object.values(existingById);
     saveReports(merged);
-    await pullPasswordsFromCloud();
     renderDashboard();
     showToast('✅ Data refreshed — ' + rows.length + ' reports loaded from Sheet.');
   } catch(err) {
@@ -1904,8 +1919,6 @@ function setTopbarLogo() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initImages();
-  // Pull latest passwords from cloud so all devices stay in sync
-  pullPasswordsFromCloud();
   // Show iOS install banner if on Safari/iOS and not yet dismissed
   const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
