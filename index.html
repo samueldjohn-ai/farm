@@ -982,10 +982,11 @@ async function pushPasswordsToCloud(passwords) {
   const url = localStorage.getItem('dv_sync_url');
   if (!url) return;
   try {
-    await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ _action: 'save_passwords', passwords })
+    // Use no-cors POST with URL-encoded data — works with Google Apps Script
+    const encoded = encodeURIComponent(JSON.stringify(passwords));
+    await fetch(url + '?action=save_passwords&passwords=' + encoded, {
+      method: 'GET',
+      mode: 'no-cors'
     });
   } catch(e) { /* silent fail */ }
 }
@@ -996,11 +997,9 @@ async function pullPasswordsFromCloud() {
   try {
     const res = await fetch(url + '?action=fetch_passwords');
     const data = await res.json();
-    if (data && typeof data === 'object' && !data.error) {
-      // Merge: cloud wins over local defaults, but keep any local-only entries
-      const local = getPasswords();
-      const merged = Object.assign({}, local, data);
-      localStorage.setItem('dv_passwords', JSON.stringify(merged));
+    if (data && typeof data === 'object' && !data.error && !Array.isArray(data)) {
+      // Cloud wins — overwrite local passwords with cloud version
+      localStorage.setItem('dv_passwords', JSON.stringify(data));
     }
   } catch(e) { /* silent fail */ }
 }
