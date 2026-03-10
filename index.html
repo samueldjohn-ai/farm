@@ -808,8 +808,9 @@ body {
   <p class="section-title">💧 Infrastructure</p>
   <div class="zone-list" id="infraList"></div>
 
-  <div style="padding:1rem; text-align:center;display:flex;justify-content:center;gap:1.5rem">
+  <div style="padding:1rem; text-align:center;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap">
     <button onclick="openChangePassword()" style="background:none;border:none;color:#7b1fa2;font-size:0.85rem;cursor:pointer;">🔑 Change Password</button>
+    <button onclick="syncMyOwnPassword()" style="background:none;border:none;color:#1565c0;font-size:0.85rem;cursor:pointer;">☁️ Sync My Password</button>
     <button onclick="logout()" style="background:none;border:none;color:var(--gray-400);font-size:0.85rem;cursor:pointer;">Sign Out</button>
   </div>
 </div>
@@ -894,7 +895,10 @@ body {
   <div style="background:#fff;border-radius:16px;padding:1.5rem;width:92%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
     <h3 style="margin:0 0 1rem;font-size:1.1rem">🔑 Password Manager</h3>
     <div id="pw-manager-list"></div>
-    <button class="btn-save" onclick="closeModal('modal-pw-manager')" style="width:100%;margin-top:1rem">Close</button>
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button class="btn-save" onclick="syncPasswordsFromCloud()" style="flex:1;background:#e3f2fd;border-color:#90caf9;color:#1565c0">☁️ Sync from Cloud</button>
+      <button class="btn-save" onclick="closeModal('modal-pw-manager')" style="flex:1">Close</button>
+    </div>
   </div>
 </div>
 
@@ -985,8 +989,10 @@ async function pushPasswordsToCloud(passwords) {
   const url = localStorage.getItem('dv_sync_url');
   if (!url) return;
   try {
-    // Use no-cors POST with URL-encoded data — works with Google Apps Script
-    const encoded = encodeURIComponent(JSON.stringify(passwords));
+    // Never push Manager password to cloud — it stays local only
+    const toSync = Object.assign({}, passwords);
+    delete toSync['Manager'];
+    const encoded = encodeURIComponent(JSON.stringify(toSync));
     await fetch(url + '?action=save_passwords&passwords=' + encoded, {
       method: 'GET',
       mode: 'no-cors'
@@ -994,6 +1000,8 @@ async function pushPasswordsToCloud(passwords) {
   } catch(e) { /* silent fail */ }
 }
 
+// Full pull — manager only, used in sync button
+// Manager password is NEVER overwritten from cloud
 async function pullPasswordsFromCloud() {
   const url = localStorage.getItem('dv_sync_url');
   if (!url) return;
@@ -1001,15 +1009,67 @@ async function pullPasswordsFromCloud() {
     const res = await fetch(url + '?action=fetch_passwords');
     const data = await res.json();
     if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && Object.keys(data).length > 0) {
-      const knownUsers = ['Manager','Onyinyechi Chinenye Precious','Angel Mbonu Chniaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
+      const knownUsers = ['Onyinyechi Chinenye Precious','Angel Mbonu Chniaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
       const hasRealPasswords = Object.keys(data).some(k => knownUsers.includes(k));
       if (hasRealPasswords) {
         const local = getPasswords();
+        // Merge cloud into local but NEVER touch Manager password
+        const managerPw = local['Manager']; 
         const merged = Object.assign({}, local, data);
+        delete merged['Manager'];
+        if (managerPw !== undefined) merged['Manager'] = managerPw;
         localStorage.setItem('dv_passwords', JSON.stringify(merged));
       }
     }
   } catch(e) { /* silent fail */ }
+}
+
+// Single-user pull — workers only fetch their own password at login
+// Manager password is NEVER pulled from cloud — local only
+async function pullMyPasswordFromCloud(name) {
+  if (name === 'Manager') return; // Manager password never comes from cloud
+  const url = localStorage.getItem('dv_sync_url');
+  if (!url) return;
+  try {
+    const res = await fetch(url + '?action=fetch_passwords');
+    const data = await res.json();
+    if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && data[name] !== undefined) {
+      // Only update this one user's password locally — nothing else
+      const local = getPasswords();
+      local[name] = data[name];
+      // Never touch Manager password
+      delete local['Manager'];
+      localStorage.setItem('dv_passwords', JSON.stringify(local));
+    }
+  } catch(e) { /* silent fail */ }
+}
+
+async function syncPasswordsFromCloud() {
+  showToast('🔄 Syncing passwords from cloud...');
+  await pullPasswordsFromCloud();
+  renderPasswordManager();
+  showToast('✅ Passwords synced from cloud!');
+}
+
+async function syncMyOwnPassword() {
+  const name = currentUser.name;
+  const url = localStorage.getItem('dv_sync_url');
+  if (!url) { showToast('⚠️ No sync URL — ask manager to set it up'); return; }
+  showToast('🔄 Syncing your password...');
+  try {
+    const res = await fetch(url + '?action=fetch_passwords');
+    const data = await res.json();
+    if (data && typeof data === 'object' && !data.error && data[name] !== undefined) {
+      const local = getPasswords();
+      local[name] = data[name];
+      localStorage.setItem('dv_passwords', JSON.stringify(local));
+      showToast('✅ Password synced!');
+    } else {
+      showToast('⚠️ No password found in cloud for you');
+    }
+  } catch(e) {
+    showToast('❌ Sync failed — check your connection');
+  }
 }
 
 function emergencyReset() {
@@ -1072,8 +1132,7 @@ function savePasswordChange() {
 }
 
 // ── Password Manager (manager view) ───────────────────────────────
-async function openPasswordManager() {
-  await pullPasswordsFromCloud();
+function openPasswordManager() {
   renderPasswordManager();
   document.getElementById('modal-pw-manager').style.display = 'flex';
 }
