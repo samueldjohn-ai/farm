@@ -724,7 +724,7 @@ body {
   <div class="login-bg-overlay"></div>
   <div class="login-card">
     <div class="login-logo">
-      <img id="loginLogo" src="" alt="DouValue Farms" style="height:70px;object-fit:contain;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;">
+      <img id="loginLogo" src="" alt="DouValue Farms" onclick="onLogoTap()" style="height:70px;object-fit:contain;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;cursor:pointer;">
       <p>Daily Operations Report</p>
     </div>
     <div class="login-tabs">
@@ -737,7 +737,7 @@ body {
         <select id="staffName">
           <option value="">Select your name...</option>
           <option>Onyinyechi Chinenye Precious</option>
-          <option>Angel Mbonu Chniaza</option>
+          <option>Angel Mbonu Chinaza</option>
           <option>Elijah Okon Johnson</option>
           <option>Worker 4</option>
           <option>Worker 5</option>
@@ -771,9 +771,7 @@ body {
         <input type="password" id="managerPassword" placeholder="Enter manager password">
       </div>
       <button class="btn-primary" onclick="managerLogin()">View Dashboard →</button>
-      <div style="text-align:center;margin-top:1rem">
-        <button onclick="emergencyReset()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:0.75rem;cursor:pointer;text-decoration:underline">Forgot password? Reset to default</button>
-      </div>
+
     </div>
   </div>
 </div>
@@ -957,7 +955,7 @@ function saveDrafts(d) {
 // ══════════════════════════════════════════════════════════════════
 const ALL_USERS = [
   'Onyinyechi Chinenye Precious',
-  'Angel Mbonu Chniaza',
+  'Angel Mbonu Chinaza',
   'Elijah Okon Johnson',
   'Worker 4',
   'Worker 5',
@@ -965,21 +963,34 @@ const ALL_USERS = [
   'Manager'
 ];
 
+// ── Manager password stored separately — never touched by cloud sync
+function getManagerPassword() {
+  return localStorage.getItem('dv_manager_pw') || '1234';
+}
+function setManagerPassword(pw) {
+  localStorage.setItem('dv_manager_pw', pw);
+}
+
+// ── Worker passwords stored together and synced with cloud
 function getPasswords() {
   try { return JSON.parse(localStorage.getItem('dv_passwords') || '{}'); } catch(e){ return {}; }
 }
 function savePasswords(p) {
   localStorage.setItem('dv_passwords', JSON.stringify(p));
-  // Push to cloud in background (no await — fire and forget)
+  // Push worker passwords to cloud (Manager never included)
   pushPasswordsToCloud(p);
 }
 function getUserPassword(name) {
+  if (name === 'Manager') return getManagerPassword();
   const passwords = getPasswords();
   if (passwords[name] !== undefined) return passwords[name];
-  if (name === 'Manager') return '1234';
   return name.split(' ')[0].toLowerCase();
 }
 function setUserPassword(name, pw) {
+  if (name === 'Manager') {
+    setManagerPassword(pw);
+    return;
+  }
   const passwords = getPasswords();
   passwords[name] = pw;
   savePasswords(passwords);
@@ -989,7 +1000,7 @@ async function pushPasswordsToCloud(passwords) {
   const url = localStorage.getItem('dv_sync_url');
   if (!url) return;
   try {
-    // Never push Manager password to cloud — it stays local only
+    // Manager password never goes to cloud — stored separately
     const toSync = Object.assign({}, passwords);
     delete toSync['Manager'];
     const encoded = encodeURIComponent(JSON.stringify(toSync));
@@ -1009,15 +1020,13 @@ async function pullPasswordsFromCloud() {
     const res = await fetch(url + '?action=fetch_passwords');
     const data = await res.json();
     if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && Object.keys(data).length > 0) {
-      const knownUsers = ['Onyinyechi Chinenye Precious','Angel Mbonu Chniaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
+      const knownUsers = ['Onyinyechi Chinenye Precious','Angel Mbonu Chinaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
       const hasRealPasswords = Object.keys(data).some(k => knownUsers.includes(k));
       if (hasRealPasswords) {
         const local = getPasswords();
-        // Merge cloud into local but NEVER touch Manager password
-        const managerPw = local['Manager']; 
+        // Merge cloud into local — Manager key never in dv_passwords anyway
         const merged = Object.assign({}, local, data);
         delete merged['Manager'];
-        if (managerPw !== undefined) merged['Manager'] = managerPw;
         localStorage.setItem('dv_passwords', JSON.stringify(merged));
       }
     }
@@ -1072,10 +1081,25 @@ async function syncMyOwnPassword() {
   }
 }
 
-function emergencyReset() {
-  if (confirm('This will reset ALL passwords back to default.\n\nManager → 1234\nWorkers → first name (lowercase)\n\nContinue?')) {
-    localStorage.removeItem('dv_passwords');
-    showToast('✅ Passwords reset to default. Manager password is 1234');
+// Secret reset — triggered by tapping logo 7 times then entering master code
+let _logoTaps = 0;
+let _logoTimer = null;
+function onLogoTap() {
+  _logoTaps++;
+  clearTimeout(_logoTimer);
+  _logoTimer = setTimeout(() => { _logoTaps = 0; }, 3000);
+  if (_logoTaps >= 7) {
+    _logoTaps = 0;
+    const code = prompt('Enter master reset code:');
+    if (code === null) return;
+    // Master code is: DV2025 — only the farm owner knows this
+    if (code === 'DV2025') {
+      localStorage.removeItem('dv_passwords');
+      localStorage.removeItem('dv_manager_pw');
+      showToast('✅ Reset done. Manager password is now 1234');
+    } else {
+      showToast('❌ Incorrect code');
+    }
   }
 }
 
@@ -1881,7 +1905,7 @@ async function syncPending() {
   const d = todayKey();
   const demos = [
     { zone:'gh1', worker:'Onyinyechi Chinenye Precious', status:'good', crop:'Tomatoes', obs:'Plants looking healthy. New flowers forming on rows 3-5.', diag:'Normal flowering stage', action:'Continue regular irrigation', harvest_qty:'42' },
-    { zone:'gh3', worker:'Angel Mbonu Chniaza', status:'monitor', crop:'Cucumber', obs:'Yellow patches on leaves in row 2, approx 8 plants affected', diag:'Possibly magnesium deficiency or early fungal', action:'Applied foliar spray, monitor for 2 days', harvest_qty:'' },
+    { zone:'gh3', worker:'Angel Mbonu Chinaza', status:'monitor', crop:'Cucumber', obs:'Yellow patches on leaves in row 2, approx 8 plants affected', diag:'Possibly magnesium deficiency or early fungal', action:'Applied foliar spray, monitor for 2 days', harvest_qty:'' },
   ];
   demos.forEach((d2,i) => {
     reports.push({
