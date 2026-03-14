@@ -1329,13 +1329,15 @@ function saveLocalPasswords(obj) {
   localStorage.setItem('dv_staff_passwords', JSON.stringify(obj));
 }
 function getLocalManagerPin() {
-  return localStorage.getItem('dv_manager_pin') || '1234';
+  return localStorage.getItem('dv_manager_pin') || '';
 }
 function saveLocalManagerPin(pin) {
   localStorage.setItem('dv_manager_pin', pin);
 }
 
 // Pull latest passwords from server and merge into local cache
+// Rule: server wins for existing server entries. Local-only entries are kept (set offline).
+// Only deletes local entry if server explicitly has __RESET__ for that name.
 async function syncPasswordsFromServer() {
   const url = getSyncUrl();
   if (!url || !navigator.onLine) return;
@@ -1343,24 +1345,36 @@ async function syncPasswordsFromServer() {
     const res = await fetch(url + '?action=getPasswords');
     const json = await res.json();
     if (json.passwords) {
-      // Server is authoritative. Remove any local entries not on server (resets by manager).
       const local = getLocalPasswords();
       const merged = {};
-      // Start with local
+
+      // Keep all valid local entries first
       Object.keys(local).forEach(k => {
         const v = local[k];
         const pw = typeof v === 'object' ? v.password : v;
         if (pw && pw !== '__RESET__') merged[k] = v;
       });
-      // Override with server (server always wins)
+
+      // Server entries override local (server is authoritative for synced passwords)
       Object.keys(json.passwords).forEach(k => {
-        merged[k] = json.passwords[k];
+        const v = json.passwords[k];
+        const pw = typeof v === 'object' ? v.password : v;
+        if (pw && pw !== '__RESET__') merged[k] = v;
       });
-      // Remove anyone who was reset (not on server anymore)
-      Object.keys(local).forEach(k => {
-        if (!json.passwords[k]) delete merged[k];
-      });
+
+      // DO NOT delete local-only entries — they were set offline and not yet pushed.
+      // They will push on next pushPasswordToServer call.
+
       saveLocalPasswords(merged);
+
+      // Push any local-only passwords to server now that we have connection
+      Object.keys(merged).forEach(k => {
+        if (!json.passwords[k]) {
+          const v = merged[k];
+          const pw = typeof v === 'object' ? v.password : v;
+          if (pw) pushPasswordToServer(k, pw);
+        }
+      });
     }
   } catch(e) { /* offline — use local */ }
 }
@@ -1458,23 +1472,29 @@ async function onManagerNameChange() {
     return;
   }
 
-  // Pull latest manager PIN from server
-  await syncManagerPinFromServer();
-  const storedPin = getLocalManagerPin();
-  const isFirstTime = (storedPin === '1234' || !storedPin);
-
   pwGroup.style.display = '';
   pwInput.value = '';
   document.getElementById('managerPinConfirm').value = '';
 
-  if (isFirstTime) {
-    pwLabel.textContent = '🔐 Create Your Password (first time)';
-    pwInput.placeholder = 'Choose a password (min 4 characters)';
-    pwConfirmGroup.style.display = '';
-  } else {
+  // Check local first — instant response
+  let storedPin = getLocalManagerPin();
+
+  if (!storedPin) {
+    // Not in local — try server (maybe set on another device)
+    await syncManagerPinFromServer();
+    storedPin = getLocalManagerPin();
+  }
+
+  if (storedPin) {
+    // Password exists — show enter-password UI
     pwLabel.textContent = 'Password';
     pwInput.placeholder = 'Enter your password';
     pwConfirmGroup.style.display = 'none';
+  } else {
+    // Truly first time — no password anywhere
+    pwLabel.textContent = '🔐 Create Your Password (first time)';
+    pwInput.placeholder = 'Choose a password (min 4 characters)';
+    pwConfirmGroup.style.display = '';
   }
   pwInput.focus();
 }
@@ -1493,24 +1513,36 @@ async function onStaffNameChange() {
     return;
   }
 
-  // Sync from server first so we always have the latest passwords
-  await syncPasswordsFromServer();
-
-  const passwords = getLocalPasswords();
-  const existing = passwords[name];
-
   pwGroup.style.display = '';
   pwInput.value = '';
   document.getElementById('staffPasswordConfirm').value = '';
 
-  if (existing) {
+  // Check local cache first — show UI immediately without waiting for server
+  const localPasswords = getLocalPasswords();
+  const localEntry = localPasswords[name];
+  const localPw = localEntry ? (typeof localEntry === 'object' ? localEntry.password : localEntry) : null;
+
+  if (localPw) {
+    // Already have password locally — show enter-password UI
     pwLabel.textContent = 'Password';
     pwInput.placeholder = 'Enter your password';
     pwConfirmGroup.style.display = 'none';
   } else {
-    pwLabel.textContent = '🔐 Create Your Password (first time)';
-    pwInput.placeholder = 'Choose a password (min 4 characters)';
-    pwConfirmGroup.style.display = '';
+    // Not in local cache — sync from server first in case it was set on another device
+    await syncPasswordsFromServer();
+    const updatedPasswords = getLocalPasswords();
+    const serverEntry = updatedPasswords[name];
+    const serverPw = serverEntry ? (typeof serverEntry === 'object' ? serverEntry.password : serverEntry) : null;
+
+    if (serverPw) {
+      pwLabel.textContent = 'Password';
+      pwInput.placeholder = 'Enter your password';
+      pwConfirmGroup.style.display = 'none';
+    } else {
+      pwLabel.textContent = '🔐 Create Your Password (first time)';
+      pwInput.placeholder = 'Choose a password (min 4 characters)';
+      pwConfirmGroup.style.display = '';
+    }
   }
   pwInput.focus();
 }
@@ -1525,17 +1557,20 @@ async function staffLogin() {
   if (!zone) { showToast('Please select your zone'); return; }
 
   const passwords = getLocalPasswords();
+  const entry = passwords[name];
+  // Support both plain string storage and object storage { password, lastSet }
+  const storedPw = entry ? (typeof entry === 'object' ? entry.password : entry) : null;
 
-  if (passwords[name]) {
-    // ── Returning staff: verify
-    if (pw !== passwords[name].password && pw !== passwords[name]) {
+  if (storedPw) {
+    // ── Returning: verify password
+    if (pw !== storedPw) {
       showToast('❌ Incorrect password — try again');
       document.getElementById('staffPassword').value = '';
       document.getElementById('staffPassword').focus();
       return;
     }
   } else {
-    // ── First time: set password
+    // ── First time: create password
     const confirm = document.getElementById('staffPasswordConfirm').value;
     if (!confirm) { showToast('Please confirm your password'); return; }
     if (pw !== confirm) {
@@ -1545,11 +1580,11 @@ async function staffLogin() {
     }
     if (pw.length < 4) { showToast('Password must be at least 4 characters'); return; }
 
-    // Save locally
+    // Save locally immediately — never lose this even if offline
     passwords[name] = { password: pw, lastSet: new Date().toISOString() };
     saveLocalPasswords(passwords);
 
-    // Push to server (async — works offline too, will sync later)
+    // Push to server in background
     pushPasswordToServer(name, pw);
     showToast('✅ Password created! Syncing to all devices...');
   }
@@ -1574,12 +1609,11 @@ async function managerLogin() {
   if (!name) { showToast('Please select your name'); return; }
   if (!pin)  { showToast('Please enter your password'); return; }
 
-  await syncManagerPinFromServer();
+  // Use what is stored locally — never fall back to '1234'
   const stored = getLocalManagerPin();
-  const isFirstTime = (stored === '1234' || !stored);
 
-  if (isFirstTime) {
-    // First-time setup — confirm and save new password
+  if (!stored) {
+    // Genuinely first time — set new password
     const confirm = document.getElementById('managerPinConfirm').value;
     if (!confirm) { showToast('Please confirm your password'); return; }
     if (pin !== confirm) {
@@ -1588,11 +1622,13 @@ async function managerLogin() {
       return;
     }
     if (pin.length < 4) { showToast('Password must be at least 4 characters'); return; }
+    // Save locally FIRST — persists immediately, survives offline
     saveLocalManagerPin(pin);
-    await pushManagerPinToServer(pin);
-    showToast('✅ Manager password created and synced to all devices');
+    // Push to server in background
+    pushManagerPinToServer(pin);
+    showToast('✅ Manager password set! Syncing to all devices...');
   } else {
-    // Returning manager — verify
+    // Returning — verify against local store
     if (pin !== stored) {
       showToast('❌ Incorrect password');
       document.getElementById('managerPin').value = '';
