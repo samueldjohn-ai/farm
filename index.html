@@ -1329,7 +1329,13 @@ function saveLocalPasswords(obj) {
   localStorage.setItem('dv_staff_passwords', JSON.stringify(obj));
 }
 function getLocalManagerPin() {
-  return localStorage.getItem('dv_manager_pin') || '';
+  const val = localStorage.getItem('dv_manager_pin') || '';
+  // '1234' was the old hardcoded default — treat it as unset so manager creates a real password
+  if (val === '1234') {
+    localStorage.removeItem('dv_manager_pin');
+    return '';
+  }
+  return val;
 }
 function saveLocalManagerPin(pin) {
   localStorage.setItem('dv_manager_pin', pin);
@@ -1382,11 +1388,12 @@ async function syncPasswordsFromServer() {
 // Pull manager PIN from server
 async function syncManagerPinFromServer() {
   const url = getSyncUrl();
-  if (!url) return;
+  if (!url || !navigator.onLine) return;
   try {
     const res = await fetch(url + '?action=getManagerPin');
     const json = await res.json();
-    if (json.pin) saveLocalManagerPin(json.pin);
+    // Ignore '1234' — that's the old default, not a real password
+    if (json.pin && json.pin !== '1234') saveLocalManagerPin(json.pin);
   } catch(e) { /* offline */ }
 }
 
