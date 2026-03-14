@@ -2,13 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="DouValue Farms">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#1a3d1f">
-<meta name="format-detection" content="telephone=no">
 <title>DouValue Farms – Daily Report</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -49,25 +46,18 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html {
-  font-size: 16px;
-  -webkit-text-size-adjust: 100%;
-  height: -webkit-fill-available;
-}
+html { font-size: 16px; -webkit-text-size-adjust: 100%; }
 
 body {
   font-family: var(--font-body);
   background: var(--off-white);
   color: var(--text);
   min-height: 100vh;
-  min-height: -webkit-fill-available;
   overflow-x: hidden;
-  -webkit-tap-highlight-color: transparent;
-  -webkit-touch-callout: none;
 }
 
 /* ── SCREENS ── */
-.screen { display: none; min-height: 100vh; min-height: -webkit-fill-available; }
+.screen { display: none; min-height: 100vh; }
 .screen.active { display: flex; flex-direction: column; }
 
 /* ── LOGIN SCREEN ── */
@@ -76,7 +66,6 @@ body {
   align-items: center;
   justify-content: center;
   padding: 2rem 1.5rem;
-  padding-top: max(2rem, env(safe-area-inset-top));
   position: relative;
   overflow: hidden;
 }
@@ -137,20 +126,14 @@ body {
 }
 .login-tab {
   flex: 1;
-  padding: 0.75rem;
-  min-height: 44px;
+  padding: 0.6rem;
   text-align: center;
   color: rgba(255,255,255,0.6);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .login-tab.active {
   background: white;
@@ -176,9 +159,8 @@ body {
   border-radius: 10px;
   color: white;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 1rem;
   appearance: none;
-  -webkit-appearance: none;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -190,7 +172,6 @@ body {
 .btn-primary {
   width: 100%;
   padding: 1rem;
-  min-height: 52px;
   background: var(--gold);
   color: var(--green-900);
   font-family: var(--font-body);
@@ -201,8 +182,6 @@ body {
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 0.5rem;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 .btn-primary:hover { background: #ffb300; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(249,168,37,0.4); }
 .btn-primary:active { transform: translateY(0); }
@@ -212,9 +191,6 @@ body {
   background: var(--green-900);
   color: white;
   padding: 1rem 1.25rem;
-  padding-top: max(1rem, env(safe-area-inset-top));
-  padding-left: max(1.25rem, env(safe-area-inset-left));
-  padding-right: max(1.25rem, env(safe-area-inset-right));
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -227,13 +203,12 @@ body {
   background: rgba(255,255,255,0.12);
   border: none;
   color: white;
-  width: 44px; height: 44px;
-  border-radius: 10px;
+  width: 36px; height: 36px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
 }
 .topbar-title { flex: 1; }
 .topbar-title h2 { font-size: 1rem; font-weight: 700; line-height: 1.2; }
@@ -255,7 +230,6 @@ body {
   background: linear-gradient(135deg, var(--green-900), var(--green-700));
   color: white;
   padding: 1.5rem 1.25rem 2rem;
-  padding-top: max(1.5rem, env(safe-area-inset-top));
 }
 .home-greeting { font-size: 0.85rem; color: var(--green-300); margin-bottom: 0.2rem; }
 .home-name { font-family: var(--font-display); font-size: 1.5rem; }
@@ -308,7 +282,6 @@ body {
   color: inherit;
 }
 .zone-card:active { transform: scale(0.98); }
-@media (hover: none) { .zone-card:hover { box-shadow: var(--shadow); } }
 .zone-card.done { border-color: var(--green-300); background: var(--green-50); }
 .zone-card.pending { border-color: transparent; }
 
@@ -342,7 +315,7 @@ body {
 /* ── FORM SCREEN ── */
 #screen-form { background: var(--off-white); }
 
-.form-body { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+.form-body { flex: 1; overflow-y: auto; padding-bottom: 6rem; }
 
 .form-section {
   margin: 0.75rem 1rem;
@@ -395,13 +368,12 @@ body {
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-sm);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 0.95rem;
   color: var(--text);
   background: var(--gray-100);
   outline: none;
   transition: all 0.15s;
   appearance: none;
-  -webkit-appearance: none;
 }
 .form-row input:focus,
 .form-row select:focus,
@@ -420,21 +392,16 @@ body {
   margin-top: 0.2rem;
 }
 .pill {
-  padding: 0.6rem 1rem;
-  min-height: 44px;
+  padding: 0.45rem 0.875rem;
   border: 1.5px solid var(--gray-200);
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
   background: var(--gray-100);
   color: var(--gray-600);
   white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  display: flex;
-  align-items: center;
 }
 .pill.selected { background: var(--green-600); border-color: var(--green-600); color: white; }
 .pill.selected.warn { background: #ef6c00; border-color: #ef6c00; }
@@ -450,20 +417,17 @@ body {
 .yn-toggle { display: flex; gap: 0.5rem; }
 .yn-btn {
   flex: 1;
-  padding: 0.75rem;
-  min-height: 48px;
+  padding: 0.65rem;
   border: 1.5px solid var(--gray-200);
   border-radius: var(--radius-sm);
   background: var(--gray-100);
   color: var(--gray-600);
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.15s;
   text-align: center;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 .yn-btn.yes.active { background: var(--green-600); border-color: var(--green-600); color: white; }
 .yn-btn.no.active  { background: var(--red-600);   border-color: var(--red-600);   color: white; }
@@ -478,9 +442,6 @@ body {
   bottom: 0; left: 0; right: 0;
   background: white;
   padding: 1rem 1.25rem;
-  padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  padding-left: max(1.25rem, env(safe-area-inset-left));
-  padding-right: max(1.25rem, env(safe-area-inset-right));
   box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
   display: flex;
   gap: 0.75rem;
@@ -489,7 +450,6 @@ body {
 .btn-save {
   flex: 1;
   padding: 0.875rem;
-  min-height: 48px;
   background: var(--green-50);
   border: 2px solid var(--green-300);
   border-radius: var(--radius-sm);
@@ -499,12 +459,10 @@ body {
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
 }
 .btn-submit {
   flex: 2;
   padding: 0.875rem;
-  min-height: 48px;
   background: var(--green-600);
   border: none;
   border-radius: var(--radius-sm);
@@ -514,7 +472,6 @@ body {
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
 }
 .btn-submit:hover { background: var(--green-500); }
 .btn-submit:active { transform: scale(0.98); }
@@ -522,15 +479,128 @@ body {
 /* ── MANAGER DASHBOARD ── */
 #screen-manager { background: var(--off-white); }
 
+/* ── Schedule / Reminder Cards ─────────────────────────── */
+.schedule-section { padding: 0 1rem 0.5rem; }
+.schedule-section-title {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--green-700); margin: 1rem 0 0.5rem;
+}
+.schedule-card {
+  background: white; border-radius: 12px; margin-bottom: 0.75rem;
+  border: 1.5px solid #e8f5e9; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.schedule-card-header {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem; background: #f1f8f1; cursor: pointer;
+}
+.schedule-zone-badge {
+  background: var(--green-700); color: white;
+  font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.5rem;
+  border-radius: 20px; white-space: nowrap; flex-shrink: 0;
+}
+.schedule-zone-info { flex: 1; min-width: 0; }
+.schedule-zone-label { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+.schedule-crop-name { font-size: 0.75rem; color: var(--gray-500); }
+.schedule-phase-tag {
+  font-size: 0.72rem; font-weight: 600; color: var(--green-700);
+  background: #e8f5e9; padding: 0.2rem 0.5rem; border-radius: 8px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.schedule-week-badge {
+  font-size: 0.7rem; font-weight: 700; color: #e65100;
+  background: #fff3e0; padding: 0.15rem 0.4rem; border-radius: 6px;
+  flex-shrink: 0;
+}
+.schedule-card-body { padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.schedule-card-body.open { max-height: 600px; }
+.schedule-task-list { padding: 0.75rem 1rem 1rem; border-top: 1px solid #e8f5e9; }
+.schedule-task-item {
+  display: flex; align-items: flex-start; gap: 0.5rem;
+  padding: 0.4rem 0; font-size: 0.85rem; color: var(--text-secondary);
+  border-bottom: 1px dashed #f0f0f0;
+}
+.schedule-task-item:last-child { border-bottom: none; }
+.schedule-task-check {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid #c8e6c9; flex-shrink: 0; margin-top: 1px;
+  background: white; display: flex; align-items: center; justify-content: center;
+}
+.schedule-task-check.done { background: var(--green-700); border-color: var(--green-700); }
+.schedule-task-check.done::after { content: '✓'; color: white; font-size: 10px; font-weight: bold; }
+.schedule-no-date {
+  background: #fffde7; border: 1.5px dashed #fbc02d; border-radius: 10px;
+  padding: 0.75rem 1rem; font-size: 0.82rem; color: #e65100;
+  display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+}
+
+/* Worker home schedule reminder */
+.home-schedule-banner {
+  margin: 0 1rem 1rem; background: white; border-radius: 12px;
+  border: 2px solid #e8f5e9; overflow: hidden;
+}
+.home-schedule-header {
+  background: linear-gradient(135deg, #1a3d1f 0%, #2e7d32 100%);
+  color: white; padding: 0.6rem 1rem;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.home-schedule-body { padding: 0.75rem 1rem; }
+.home-task-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.35rem 0; font-size: 0.82rem; color: var(--text-secondary);
+  border-bottom: 1px dashed #f0f0f0;
+}
+.home-task-row:last-child { border-bottom: none; }
+.home-task-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-700); flex-shrink: 0;
+}
+.home-schedule-meta {
+  font-size: 0.75rem; color: var(--gray-500);
+  margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem;
+}
+.home-schedule-phase {
+  font-size: 0.75rem; font-weight: 700; color: var(--green-700);
+  background: #e8f5e9; padding: 0.15rem 0.4rem; border-radius: 6px;
+}
+
+/* Planting date setup modal */
+.schedule-setup-panel {
+  background: white; border-radius: 12px; margin: 0 1rem 1rem;
+  border: 1.5px solid #bbdefb; overflow: hidden;
+}
+.schedule-setup-header {
+  background: #e3f2fd; padding: 0.6rem 1rem;
+  font-size: 0.78rem; font-weight: 700; color: #1565c0;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.schedule-setup-body { padding: 0.75rem 1rem; }
+.setup-zone-row {
+  display: flex; align-items: center; gap: 0.5rem;
+  padding: 0.4rem 0; border-bottom: 1px dashed #e0e0e0; font-size: 0.82rem;
+}
+.setup-zone-row:last-child { border-bottom: none; }
+.setup-zone-row label { flex: 1; font-weight: 600; color: var(--text); }
+.setup-zone-row span { color: var(--gray-500); font-size: 0.75rem; }
+.setup-zone-row input[type=date] {
+  border: 1.5px solid #c8e6c9; border-radius: 6px;
+  padding: 0.2rem 0.4rem; font-size: 0.78rem; color: var(--text);
+  background: white; flex-shrink: 0;
+}
+.schedule-week-pill {
+  background: #e8f5e9; color: var(--green-700);
+  font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.4rem;
+  border-radius: 10px; white-space: nowrap;
+}
+.schedule-week-pill.overdue { background: #ffebee; color: #c62828; }
+
 .mgr-header {
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, var(--green-900), #0a2e0f);
   color: white;
   padding: 1.5rem 1.25rem;
-  padding-top: max(1.5rem, env(safe-area-inset-top));
-  padding-left: max(1.25rem, env(safe-area-inset-left));
-  padding-right: max(1.25rem, env(safe-area-inset-right));
 }
 .mgr-header h1 { font-family: var(--font-display); font-size: 1.4rem; }
 .mgr-header p { font-size: 0.8rem; color: var(--green-300); margin-top: 0.3rem; }
@@ -546,20 +616,17 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 .filter-btn {
-  padding: 0.5rem 1rem;
-  min-height: 44px;
+  padding: 0.45rem 0.875rem;
   border: 1.5px solid var(--gray-200);
   border-radius: 20px;
   background: white;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   cursor: pointer;
   white-space: nowrap;
   font-family: var(--font-body);
   color: var(--gray-600);
   transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
 }
 .filter-btn.active {
   background: var(--green-600);
@@ -583,7 +650,7 @@ body {
 .mgr-stat .val { font-size: 1.5rem; font-weight: 700; color: var(--green-600); }
 .mgr-stat .lbl { font-size: 0.65rem; color: var(--gray-600); margin-top: 2px; line-height: 1.2; }
 
-.mgr-reports { padding: 0 1rem; padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+.mgr-reports { padding: 0 1rem 6rem; }
 .report-date-group { margin-bottom: 1rem; }
 .report-date-label {
   font-size: 0.72rem;
@@ -724,26 +791,38 @@ body {
   <div class="login-bg-overlay"></div>
   <div class="login-card">
     <div class="login-logo">
-      <img id="loginLogo" src="" alt="DouValue Farms" onclick="onLogoTap()" style="height:70px;object-fit:contain;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;cursor:pointer;">
+      <img id="loginLogo" src="" alt="DouValue Farms" style="height:70px;object-fit:contain;margin-bottom:0.5rem;display:block;margin-left:auto;margin-right:auto;">
       <p>Daily Operations Report</p>
     </div>
-    <div class="login-tabs">
-      <div class="login-tab active" onclick="setLoginMode('staff')">Farm Staff</div>
-      <div class="login-tab" onclick="setLoginMode('manager')">Manager</div>
-    </div>
+    <!-- Staff login — shown by default -->
     <div id="staff-login">
       <div class="field-group">
         <label>Your Name</label>
-        <select id="staffName">
+        <select id="staffName" onchange="onStaffNameChange()">
           <option value="">Select your name...</option>
           <option>Onyinyechi Chinenye Precious</option>
-          <option>Angel Mbonu Chinaza</option>
+          <option>Angel Mbonu Chniaza</option>
           <option>Elijah Okon Johnson</option>
           <option>Worker 4</option>
           <option>Worker 5</option>
           <option>Worker 6</option>
         </select>
       </div>
+
+      <!-- Password field — shown after name is selected -->
+      <div class="field-group" id="staffPasswordGroup" style="display:none">
+        <label id="staffPasswordLabel">Password</label>
+        <input type="password" id="staffPassword" placeholder="Enter your password" maxlength="20"
+          onkeydown="if(event.key==='Enter') staffLogin()">
+      </div>
+
+      <!-- First-time: confirm password -->
+      <div class="field-group" id="staffPasswordConfirmGroup" style="display:none">
+        <label>Confirm Password</label>
+        <input type="password" id="staffPasswordConfirm" placeholder="Re-enter your password" maxlength="20"
+          onkeydown="if(event.key==='Enter') staffLogin()">
+      </div>
+
       <div class="field-group">
         <label>Your Zone Today</label>
         <select id="staffZone">
@@ -759,19 +838,24 @@ body {
           <option value="irrigation">💧 Irrigation System</option>
         </select>
       </div>
-      <div class="field-group">
-        <label>Password</label>
-        <input type="password" id="staffPassword" placeholder="Enter your password">
-      </div>
+
       <button class="btn-primary" onclick="staffLogin()">Start Today's Report →</button>
+      <div style="text-align:center;margin-top:1.2rem;">
+        <button onclick="setLoginMode('manager')" style="background:none;border:none;color:rgba(255,255,255,0.55);font-size:0.78rem;cursor:pointer;text-decoration:underline;">Manager Login</button>
+      </div>
     </div>
+
+    <!-- Manager login — hidden by default -->
     <div id="manager-login" style="display:none">
       <div class="field-group">
-        <label>Password</label>
-        <input type="password" id="managerPassword" placeholder="Enter manager password">
+        <label>Manager PIN</label>
+        <input type="password" id="managerPin" placeholder="Enter PIN (default: 1234)" maxlength="6"
+          onkeydown="if(event.key==='Enter') managerLogin()">
       </div>
       <button class="btn-primary" onclick="managerLogin()">View Dashboard →</button>
-
+      <div style="text-align:center;margin-top:1.2rem;">
+        <button onclick="setLoginMode('staff')" style="background:none;border:none;color:rgba(255,255,255,0.55);font-size:0.78rem;cursor:pointer;text-decoration:underline;">← Back to Staff Login</button>
+      </div>
     </div>
   </div>
 </div>
@@ -801,14 +885,16 @@ body {
 
   <p class="section-title">🌿 Greenhouses</p>
   <div class="zone-list" id="ghList"></div>
+
+  <!-- Worker: This zone's schedule reminder (shown after zone cards) -->
+  <div id="homeScheduleReminder"></div>
+
   <p class="section-title">🌾 Open Fields</p>
   <div class="zone-list" id="fieldList"></div>
   <p class="section-title">💧 Infrastructure</p>
   <div class="zone-list" id="infraList"></div>
 
-  <div style="padding:1rem; text-align:center;display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap">
-    <button onclick="openChangePassword()" style="background:none;border:none;color:#7b1fa2;font-size:0.85rem;cursor:pointer;">🔑 Change Password</button>
-    <button onclick="syncMyOwnPassword()" style="background:none;border:none;color:#1565c0;font-size:0.85rem;cursor:pointer;">☁️ Sync My Password</button>
+  <div style="padding:1rem; text-align:center;">
     <button onclick="logout()" style="background:none;border:none;color:var(--gray-400);font-size:0.85rem;cursor:pointer;">Sign Out</button>
   </div>
 </div>
@@ -854,49 +940,24 @@ body {
   </div>
 
   <div class="mgr-summary" id="mgrSummary"></div>
+
+  <!-- Weekly Schedule Reminders -->
+  <div class="schedule-section" id="mgrScheduleSection">
+    <div class="schedule-section-title">📅 This Week's Farm Schedule</div>
+    <div id="mgrScheduleCards"></div>
+  </div>
+
   <div class="mgr-reports" id="mgrReports"></div>
 
   <div class="submit-bar">
-    <button class="btn-save" onclick="exportCSV()" style="flex:1">📥 Export CSV</button>
-    <button class="btn-save" onclick="setupSync()" style="flex:1;background:var(--blue-light,#e3f2fd);border-color:#90caf9;color:#1565c0">☁️ Setup Sync</button>
-    <button class="btn-save" onclick="pullFromCloud()" style="flex:1;background:#e8f5e9;border-color:#81c784;color:#1b5e20">🔄 Refresh Data</button>
-    <button class="btn-save" onclick="openPasswordManager()" style="flex:1;background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a">🔑 Passwords</button>
+    <button class="btn-save" id="notifBtn" onclick="openNotifications()" style="flex:1;background:#e8f5e9;border-color:#66bb6a;color:#1b5e20">🔔</button>
+    <button class="btn-save" onclick="fetchFromSheets()" id="fetchBtn" style="flex:1;background:#e8f5e9;border-color:#66bb6a;color:#1b5e20">🔄 Fetch</button>
+    <button class="btn-save" onclick="exportCSV()" style="flex:1">📥 CSV</button>
+    <button class="btn-save" onclick="openScheduleSetup()" style="flex:1;background:#f3e5f5;border-color:#ce93d8;color:#6a1b9a">📅 Schedule</button>
+    <button class="btn-save" onclick="openStaffPasswords()" style="flex:1;background:#fff3e0;border-color:#ffcc80;color:#e65100">🔑 Staff PINs</button>
+    <button class="btn-save" onclick="openChangeManagerPin()" style="flex:1;background:#e3f2fd;border-color:#90caf9;color:#1565c0">🔐 My PIN</button>
+    <button class="btn-save" onclick="setupSync()" style="flex:1;background:#e3f2fd;border-color:#90caf9;color:#1565c0">☁️ Sync</button>
     <button class="btn-submit" onclick="logout()" style="flex:1">Sign Out</button>
-  </div>
-</div>
-
-<!-- ══ CHANGE PASSWORD MODAL (staff) ════════════════════════════ -->
-<div id="modal-change-pw" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:none;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:16px;padding:1.5rem;width:90%;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
-    <h3 style="margin:0 0 1rem;font-size:1.1rem">🔑 Change Your Password</h3>
-    <div class="field-group">
-      <label>Current Password</label>
-      <input type="password" id="cpw-current" placeholder="Enter current password">
-    </div>
-    <div class="field-group">
-      <label>New Password</label>
-      <input type="password" id="cpw-new" placeholder="Enter new password">
-    </div>
-    <div class="field-group">
-      <label>Confirm New Password</label>
-      <input type="password" id="cpw-confirm" placeholder="Confirm new password">
-    </div>
-    <div style="display:flex;gap:0.75rem;margin-top:1rem">
-      <button class="btn-save" onclick="closeModal('modal-change-pw')" style="flex:1">Cancel</button>
-      <button class="btn-primary" onclick="savePasswordChange()" style="flex:1">Save Password</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PASSWORD MANAGER MODAL (manager view) ════════════════════ -->
-<div id="modal-pw-manager" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:16px;padding:1.5rem;width:92%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.2)">
-    <h3 style="margin:0 0 1rem;font-size:1.1rem">🔑 Password Manager</h3>
-    <div id="pw-manager-list"></div>
-    <div style="display:flex;gap:0.75rem;margin-top:1rem">
-      <button class="btn-save" onclick="syncPasswordsFromCloud()" style="flex:1;background:#e3f2fd;border-color:#90caf9;color:#1565c0">☁️ Sync from Cloud</button>
-      <button class="btn-save" onclick="closeModal('modal-pw-manager')" style="flex:1">Close</button>
-    </div>
   </div>
 </div>
 
@@ -910,16 +971,301 @@ const SYNC_URL = localStorage.getItem('dv_sync_url') || '';
 // DATA & STATE
 // ══════════════════════════════════════════════════════════════════
 const ZONES = [
-  { id:'gh1',       label:'Greenhouse 1', icon:'🌿', type:'gh' },
-  { id:'gh2',       label:'Greenhouse 2', icon:'🌿', type:'gh' },
-  { id:'gh3',       label:'Greenhouse 3', icon:'🌿', type:'gh' },
-  { id:'gh4',       label:'Greenhouse 4', icon:'🌿', type:'gh' },
-  { id:'gh5',       label:'Greenhouse 5', icon:'🌿', type:'gh' },
-  { id:'fieldA',    label:'Open Field A', icon:'🌾', type:'field' },
-  { id:'fieldB',    label:'Open Field B', icon:'🌾', type:'field' },
-  { id:'fieldC',    label:'Open Field C', icon:'🌾', type:'field' },
-  { id:'irrigation',label:'Irrigation System', icon:'💧', type:'infra' },
+  { id:'gh1',       label:'Greenhouse 1', icon:'🌿', type:'gh',    crop:'Bell Pepper' },
+  { id:'gh2',       label:'Greenhouse 2', icon:'🌿', type:'gh',    crop:'Bell Pepper' },
+  { id:'gh3',       label:'Greenhouse 3', icon:'🌿', type:'gh',    crop:'Bell Pepper' },
+  { id:'gh4',       label:'Greenhouse 4', icon:'🌿', type:'gh',    crop:'Bell Pepper' },
+  { id:'gh5',       label:'Greenhouse 5', icon:'🌿', type:'gh',    crop:'Bell Pepper' },
+  { id:'fieldA',    label:'Open Field A', icon:'🌾', type:'field',  crop:'Chilli Pepper (~300 plants)' },
+  { id:'fieldB',    label:'Open Field B', icon:'🌾', type:'field',  crop:'—' },
+  { id:'fieldC',    label:'Open Field C', icon:'🌾', type:'field',  crop:'Habanero Pepper (~1000 plants)' },
+  { id:'irrigation',label:'Irrigation System', icon:'💧', type:'infra', crop:null },
 ];
+
+// ══════════════════════════════════════════════════════════════════
+// CROP SCHEDULE SYSTEM
+// Week-by-week tasks for Bell Pepper (GH) and Hot Peppers (Fields)
+// ══════════════════════════════════════════════════════════════════
+// ── CROP SCHEDULE — ALIGNED WITH DOUVALUE FARM SCHEDULE V4 ──────
+// Sources: Haifa Group | Rutgers NJAES | FAO | UC IPM | Port Harcourt Climate Data
+const CROP_SCHEDULE = {
+
+  // ── SECTION A: GREENHOUSE BELL PEPPER (GH1–GH5) ─────────────
+  // Polythene roof + UV-net walls | Drip irrigation | 30cm spacing
+  'Bell Pepper': [
+    { week:0, phase:'🌱 Week 0 — Transplant Day',
+      tasks:[
+        'TRANSPLANT 4–6 PM only — never in midday heat. Firm soil around roots, no air pockets.',
+        'Open ALL greenhouse doors 10am–2pm daily (entire cycle) to flush humid air — close at 2pm.',
+        'Install YELLOW STICKY TRAPS: 1 per 6m² at plant height. Higher density needed — UV-net walls allow open insect access.',
+        'Irrigate immediately after planting. Run drip 30 min. Then: 6:30am 20min / 1pm 15min / 5pm 20min every day.',
+        'Write in logbook: today = WEEK 0, DAY 1. All future weeks counted from this date.',
+        '⚠️ PRE-PLANT (done before today): Soil solarised 3–4 weeks with transparent polythene. Neem cake 250g per hole applied. Mancozeb (FRAC M3) structural spray done Wed. Cypermethrin (IRAC 3A) spray done Fri.',
+      ]
+    },
+    { week:1, phase:'🌱 Week 1 — Root Establishment',
+      tasks:[
+        'MON: Apply Trichoderma harzianum drench (5g/L) via drip — 30 min. Repeat every 14 days. NEVER within 48hrs of fungicide drench.',
+        'TUE: IPM SCOUTING — inspect 10 plants per greenhouse. Check underside of leaves, growing tips, stem base. Record in logbook. Whitefly >5 per trap = spray Thiamethoxam (IRAC 4A) this week.',
+        'WED: Garlic-Chilli spray (4–7pm): steep 6g garlic + 6g chilli in 4L hot water 6hrs, strain TWICE, add 15ml soap + 15ml vinegar, fill to 15L. PHI = 0 days.',
+        'SAT: Thiamethoxam 25WG (IRAC 4A) — 0.2g/L, spray 4–7pm. LOG: IRAC 4A. Rotation so far: 3A → 4A.',
+        'SAT: NPK 20-10-10 fertigation — dissolve 1kg in 50L, pour into 1,000L tank, run drip 25 min.',
+        'Check plant assessment: pale yellow NEW tips = N deficiency (increase NPK). Yellow LOWER leaves = over-watering (reduce afternoon drip 5 min).',
+      ]
+    },
+    { week:2, phase:'🌿 Week 2 — Vegetative Growth Acceleration',
+      tasks:[
+        'MON: Ca+K FOLIAR spray (4–7pm): 50g Ca Nitrate + 50g K Nitrate in 16L. NEVER mix Ca Nitrate + Mg Sulphate in same spray.',
+        'TUE: Microbial inoculant drench (biweekly — if 14 days since last). Neem oil spray (4–7pm): cold-pressed ONLY — 150ml + 30ml soap emulsified, fill to 16L. Use within 8 hours.',
+        'THU: Mg Sulphate foliar (4–7pm): 50g in 16L. SEPARATE from Ca Nitrate — apply on different days.',
+        'SAT: Copper Oxychloride 50WP (FRAC M1) — 3g/L, spray 4–7pm, include soil surface. LOG: FRAC M1. Rotation: M3 → M1.',
+        'SAT: Spinosad 45SC (IRAC 5) — 0.3ml/L, spray AFTER 4PM ONLY (degrades in UV). Focus on growing tips and leaf undersides. LOG: IRAC 5. Rotation: 3A → 4A → 5.',
+        'Confirm stakes (120cm bamboo/iron, 1 per plant) are ready for Monday Week 3.',
+      ]
+    },
+    { week:3, phase:'🌿 Week 3 — CRITICAL: Staking + Pruning Begins',
+      tasks:[
+        'MON: Install ALL stakes today — 120cm bamboo/iron, 1 per plant, 5cm from stem. Tie loosely (2 fingers must fit between stem and tie).',
+        'MON: SPLIT Ca dosing starts: 0.7kg Ca Nitrate Monday + 0.7kg Thursday (separate tank passes). K Nitrate 1kg separate pass. NEVER mix Ca + K in same tank — white precipitate blocks emitters.',
+        'WED & FRI: PRUNING (twice weekly from now through harvest): Sanitise tool in 70% alcohol before starting and BETWEEN EVERY PLANT. Remove all laterals below Y-fork. Remove leaves touching neighbours. Maintain 5cm visible air gap. Spray cuts with dilute copper (2g/L).',
+        'THU: Metalaxyl-M + Mancozeb (FRAC 4+M3) — 2.5g/L, spray 4–7pm including soil drench at plant bases. LOG: FRAC 4+M3. Rotation: M3 → M1 → 4+M3.',
+        'THU: Chlorantraniliprole 200SC (IRAC 28) — 0.5ml/L, spray 4–7pm. LOG: IRAC 28. Rotation: 3A → 4A → 5 → 28.',
+        'SAT: NPK 15-15-15 fertigation — 1kg in 1,000L, run 25 min. Boron foliar BEGINS: exactly 1g Borax/L on growing tips only — NEVER exceed 1.5g/L (causes scorch). Apply 4hrs apart from Ca.',
+      ]
+    },
+    { week:4, phase:'🌼 Week 4 — Pre-Flowering: Watch for First Buds',
+      tasks:[
+        '⚠️ FIRST BUD ALERT: When first bud appears — STOP foliar Ca permanently. Switch to Ca drench only. Ca cannot move from leaves to fruit (phloem-immobile). Note date in logbook.',
+        'MON: Ca Nitrate drench 1kg + K Nitrate drench 1kg — SEPARATE passes (flush between). If buds visible, increase Ca to 1.4kg.',
+        'WED: Zinc Sulphate foliar — 2g/L in 16L, spray 4–7pm (monthly from now). Pruning #2: tie all flower-bearing branches individually.',
+        'THU: Mg Sulphate drench — 1kg in separate pass. Insecticide — check logbook, rotate to next IRAC group in sequence.',
+        'FRI: Garlic-Chilli spray (biweekly). Pruning: remove suckers at/below Y-fork. Pay attention to flower-bud zones where thrips congregate.',
+        'SAT: SWITCH TO HIGH-K NPK — use 15-5-20 or 15-15-15 + 500g extra KNO3 per 1,000L. Continue through harvest. Mancozeb 80WP (FRAC M3) — 2.5g/L, spray 4–7pm. Rotation now restarts: M3 → M1 → 4+M3 → M3.',
+      ]
+    },
+    { week:5, phase:'🌼 Weeks 5–6 — Full Flowering',
+      tasks:[
+        '⚠️ FLOWERING RULES: NEVER spray any foliar onto open flowers. Spray only after 5pm. Never spray in strong wind through UV-net walls — droplets on anthers damage pollen.',
+        'MON: Ca Nitrate drench INCREASED to 1.4kg/1,000L (separate pass, flush). K Nitrate 1.4kg (separate pass). Tie all flower-bearing stems individually — fruit weight will pull them down.',
+        'WED: Boron foliar 1g/L on tips only — NOT onto open flowers. Pruning: remove touching leaves above Y-fork. If fruit set <60% after 1 week — gently vibrate flower-bearing stems at noon.',
+        'THU: Copper Oxychloride (FRAC M1) 3g/L, spray after 5pm — avoid open flowers. Rotate insecticide to next IRAC group. LOG both products.',
+        'SAT: High-K NPK fertigation continued. Mg Sulphate drench (separate pass). Neem Oil (biweekly): cold-pressed 150ml + 30ml soap → 16L, spray 4–7pm.',
+        'Check EC of fertigation: target 2.0–3.0 mS/cm. If >3.5 mS/cm or white salt crust visible — flush 1hr with plain water before fertigating.',
+      ]
+    },
+    { week:7, phase:'🫑 Weeks 7–8 — Fruit Set & Early Development',
+      tasks:[
+        'Fruit now visible — small green pods forming. Ca Nitrate drench is now the SINGLE MOST IMPORTANT input. Never miss a Ca drench.',
+        'MON: Split Ca drench: 0.7kg Monday + 0.7kg Thursday. K Nitrate 1.4kg separate pass. EC check: target 2.0–3.0 mS/cm during fruit fill.',
+        'MON: Re-inspect and reinforce ALL stakes — fruit weight accumulating. Re-stake any leaning plant same day.',
+        'WED: Pruning — remove leaves shading developing fruit (bell peppers need direct light for red/yellow colour). Keep leaves shading root zone.',
+        'WED: Check for BLOSSOM-END ROT (dark sunken spot at bottom of fruit) — if found, immediately increase Ca drench to 1.8kg/1,000L.',
+        'FRI: Fungicide — rotate FRAC group. Spray after 5pm. Rainy season (Jun–Sep): spray every 10 days, not 14 (humid air through UV-net walls). Insecticide IRAC rotation. Zinc foliar if Week 8 (2g/L ZnSO4).',
+      ]
+    },
+    { week:9, phase:'🍎 Weeks 9–12 — Fruit Fill & Colour',
+      tasks:[
+        'Ca Nitrate drench 1.4kg/1,000L Monday + Thursday — NEVER reduce Ca until last fruit harvested.',
+        'K Nitrate 1.4kg separate pass — drives fruit fill, colour, and sugar content.',
+        'Pruning twice weekly (Mon+Thu or Wed+Fri) — fruit weight makes canopy management critical. Individually tie heavy fruit-bearing branches.',
+        '⚠️ WEEK 10+ PHI COMPLIANCE: STOP all synthetic chemicals. Switch to organics ONLY: Neem Oil (alt Tues), Garlic-Chilli spray (alt Thu), Copper Hydroxide 2g/L for fungicide. NO Cypermethrin, Thiamethoxam, or Chlorantraniliprole within 14 days of harvest.',
+        'SAT Week 10+: Reduce NPK to 0.7kg/1,000L (half dose) — reduce N to avoid vegetative growth diverting energy from ripening. Ca remains at split 1.4kg total.',
+        'Colour check: red/yellow varieties show colour change Week 10–11. Document and photograph daily. Fruit cracking = period of under-watering then over-watering — regularise irrigation.',
+      ]
+    },
+    { week:12, phase:'🍅 Weeks 12–15 — Harvest (Grade & Record)',
+      tasks:[
+        'Walk all greenhouses daily. Record first ripe fruit date in logbook. Begin selective harvest.',
+        'HARVEST METHOD: Cut with clean scissors — NEVER pull. Leave 1cm stem attached. Handle gently — bruised fruit ripens rapidly and cannot be stored or exported.',
+        'GRADE A (Export/Premium): uniform shape, full colour, firm, no blemishes, 70–90mm length → ventilated trays → highest price.',
+        'GRADE B (Local Market): good shape, minor cosmetic marks, fully coloured → crates → standard price.',
+        'GRADE C (Processing): undersized/irregular but no rot → bulk bags → sell to processors. NEVER discard.',
+        'REJECT: active rot, fungal infection, insect damage through flesh → remove from field immediately, bag and dispose far from crop.',
+      ]
+    },
+  ],
+
+  // ── SECTION B: OPEN FIELD HABANERO (Field C — ~1,000 plants) ─
+  // Full sun, no overhead cover | Drip irrigation | 30cm × 30cm spacing
+  // Open field rule: reapply spray within 4hrs of any rain >15mm
+  'Habanero Pepper': [
+    { week:0, phase:'🌱 Week H-0 — Transplant Day (Field)',
+      tasks:[
+        'TRANSPLANT 4–6 PM only. At 30cm × 30cm spacing — plant in straight rows aligned with drip emitters. Each plant must sit directly over an emitter.',
+        'Apply 12cm organic mulch (dry grass, rice straw, or coco peat) across ENTIRE field including between plants. Mulch prevents Phytophthora spore splash in PH rainy season. Below 8cm = disease risk.',
+        'Install bamboo stakes NOW — 100cm tall, 1 per plant. Habanero becomes bushy and heavy with fruit clusters.',
+        'IRRIGATION RULE (ALL WEEKS): 6:30am 30min (dry season Nov–Mar) / 20min (rainy season Apr–Oct). 5pm 20min. Skip 5pm if >15mm rain today. Skip next morning if >25mm rain previous day.',
+        'Write in logbook: transplant date = HABANERO WEEK H-0, DAY 1.',
+        '⚠️ PRE-PLANT done: Soil solarised 3–4 wks with transparent polythene. Neem cake 250g per hole + 5 tonnes/ha compost incorporated before solarisation.',
+      ]
+    },
+    { week:1, phase:'🌱 Weeks H-1 to H-2 — Root Establishment (Field)',
+      tasks:[
+        'MON W1: Microbial inoculant drench — Trichoderma harzianum 2.5g/L into 500L field tank. Run drip 30 min. Repeat every 14 days. NEVER within 48hrs of fungicide drench.',
+        'WED W1: Ca+K foliar spray (4–6pm): 50g Ca Nitrate + 50g K Nitrate in 16L. Check weather — if rain within 2 hours, reapply next dry evening.',
+        'SAT W1: Thiamethoxam 25WG (IRAC 4A) — 0.2g/L, spray 4–7pm. LOG: IRAC 4A. Monitor FIELD EDGE PLANTS first — insects enter from perimeter.',
+        'SAT W1: NPK 20-10-10 drench — 1kg into 500L field tank, run 25 min.',
+        'WED W2: Pruning #1 — same protocol as greenhouse: sanitise tool, sanitise BETWEEN EVERY PLANT, remove laterals below Y-fork, remove touching leaves, maintain 5cm gap, spray cuts with copper 2g/L. Continue twice-weekly (Wed + Sat).',
+        'SAT W2: Mancozeb 80WP (FRAC M3) — 2.5g/L, spray 4–7pm. OPEN FIELD RULE: do NOT spray onto wet leaves. NPK 15-15-15 drench (1kg/500L). Mg Sulphate 500g separate pass.',
+      ]
+    },
+    { week:3, phase:'🌿 Weeks H-3 to H-5 — Vegetative Frame Building',
+      tasks:[
+        'MON W3: Install stakes 100cm bamboo, 1 per plant. Switch Ca+K to DRENCH: Ca Nitrate 500g + K Nitrate 500g into 500L tank as SEPARATE passes. NEVER mix Ca + K in same tank.',
+        'MON W3: Boron foliar BEGINS — 1g Borax/L, spray growing tips and young leaves. Continue weekly through fruit set. Niger Delta soils are chronically boron-deficient.',
+        'SPRAY CALENDAR H-3 to H-5 (alternate Wed + Sat): W3-Wed Garlic-Chilli. W3-Sat NPK + Copper Oxy (FRAC M1) + IRAC rotate. W4-Wed Neem Oil. W4-Sat Ca+K drench + NPK + Metalaxyl-M (FRAC 4+M3) + Spinosad (IRAC 5). W5-Wed Garlic-Chilli. W5-Sat NPK high-K switch + Boron + Mancozeb (FRAC M3).',
+        'Zinc foliar (monthly): ZnSO4 2g/L — first application this week.',
+        '⚠️ HELICOVERPA POD BORER — monitor from W3: inspect field perimeter plants every Tuesday. Look for cream/brown caterpillars boring into stems or buds; entry holes + dark frass pellets. Threshold: 3 plants affected = spray Chlorantraniliprole (IRAC 28) 0.5ml/L immediately. Uncontrolled borer destroys 40–60% of crop.',
+        'Watch for crown rot (brown/black lesion at soil line during pruning) — if found, immediately drench that plant + 4 neighbours with Metalaxyl-M.',
+      ]
+    },
+    { week:6, phase:'🌼 Weeks H-6 to H-8 — Flowering',
+      tasks:[
+        'SWITCH TO HIGH-K NPK: 15-5-20 or 15-15-15 + 500g extra KNO3 per 500L tank. Apply via drip every Saturday.',
+        'Ca Nitrate drench: maintain twice weekly at 500g/500L. NEVER miss — Ca deficiency sets up capsaicin deficiency in fruit.',
+        'FLOWERING SPRAY RULES: spray ONLY after 5pm. Never spray onto open flowers — damages pollen and causes fruit drop.',
+        'Continue Boron foliar 1g/L weekly through fruit set. Tie flower-bearing branches individually — habanero fruit clusters are very heavy.',
+        'RAIN RULE (open field): if >15mm rain within 3 hours of any pesticide spray — reapply next dry day. No polythene roof protection outdoors.',
+        'Flower drop causes: water stress, boron deficiency, spray on open flowers, or heat >38°C soil temp. Mulch keeps soil temperature down.',
+      ]
+    },
+    { week:8, phase:'🍎 Weeks H-8 to H-10 — Fruit Fill & PHI Compliance',
+      tasks:[
+        'Continue Ca Nitrate drench 500g/500L twice weekly — maintain until last harvest flush.',
+        'HIGH-K NPK: continue every Saturday. Potassium drives capsaicin heat content and pigment in habanero.',
+        '⚠️ WEEK 10+ PHI COMPLIANCE: switch to organics ONLY. Neem oil 150ml/16L — alternate with Garlic-Chilli every 3–4 days. Copper Hydroxide 2g/L for fungicide. ZERO synthetic insecticides within 14 days of harvest.',
+        'FIRST HARVEST (W10–12): habanero ready when full-sized and beginning to change colour (green → orange/red/chocolate depending on variety). Firm and fully coloured = perfect. Overripe = splitting and fungal entry.',
+        'Harvest: CUT with scissors, leave 1cm stem. ⚠️ SAFETY: workers MUST wear gloves and eye protection — habanero capsaicin causes severe skin and eye injury. No touching face.',
+        'GRADING same as greenhouse: Grade A (Export, 35–50mm), Grade B (Local), Grade C (Processing). NEVER discard Grade C. Remove rejected fruit immediately — bag and dispose far from field.',
+      ]
+    },
+    { week:12, phase:'🔄 Weeks H-12 to H-16 — Second Flush & Ongoing Production',
+      tasks:[
+        'After first harvest flush: apply Urea top-dress 20g per plant around drip zone. Resume NPK drench at full rate to drive new vegetative growth and second flowering.',
+        'Prune dead/exhausted branches after each harvest flush — remove branches with no active buds.',
+        'Top-up mulch to 12cm if thinned below 8cm.',
+        'Second flush typically produces larger habanero with more consistent capsaicin. Third flush possible — habanero can produce 3–4 flushes in PH climate with correct management.',
+        'PHYTOPHTHORA MONITORING: after each harvest flush, inspect crown of every plant for soil-line lesions — foot traffic during harvest compresses soil and damages roots.',
+        'Continue twice-weekly pruning and spray rotation. Second and third flush economics are significantly better — all establishment costs already paid.',
+      ]
+    },
+  ],
+};
+
+// Alias for Field A (Chilli ~300 plants) — same schedule structure as Habanero
+// Field A uses open-field habanero schedule adapted for chilli pepper
+CROP_SCHEDULE['Chilli Pepper (~300 plants)'] = [
+  { week:0, phase:'🌱 Week 0 — Transplant Day (Field A)',
+    tasks:[
+      'TRANSPLANT 4–6 PM only. Space plants at drip emitter positions. Water each row immediately as you plant.',
+      'Apply mulch 8–12cm depth across field including between plants — prevents Phytophthora spore splash.',
+      'Install bamboo stakes 100cm, 1 per plant. Write transplant date in logbook = CHILLI WEEK 0, DAY 1.',
+      'IRRIGATION: 6:30am 30min (dry) / 20min (rainy). 5pm 20min. Skip 5pm if >15mm rain today.',
+      '⚠️ PRE-PLANT: Soil solarised 3–4 wks transparent polythene. Neem cake 250g per hole applied.',
+      'Install yellow sticky traps at field perimeter and at plant height across rows.',
+    ]
+  },
+  { week:1, phase:'🌱 Weeks 1–2 — Root Establishment (Field A)',
+    tasks:[
+      'MON: Microbial inoculant drench (Trichoderma/Bacillus) via drip — 500L field tank scale. Every 14 days. 48hr gap from fungicide.',
+      'WED: Ca+K foliar (4–6pm): 50g Ca Nitrate + 50g K Nitrate in 16L. Rain rule: reapply if rain within 2hrs.',
+      'SAT: Thiamethoxam 25WG (IRAC 4A) 0.2g/L, spray 4–7pm. NPK 20-10-10 drench (1kg/500L).',
+      'WED W2: Pruning #1 — sanitise tool, sanitise between every plant, remove laterals below Y-fork, 5cm air gap, spray cuts with copper 2g/L. Continue twice weekly.',
+      'SAT W2: Mancozeb 80WP (FRAC M3) 2.5g/L, dry leaves only. NPK 15-15-15 + Mg Sulphate 500g separate pass.',
+      'Monitor field edge plants weekly — insects (thrips, aphids, Helicoverpa) enter from perimeter.',
+    ]
+  },
+  { week:3, phase:'🌿 Weeks 3–5 — Vegetative Growth (Field A)',
+    tasks:[
+      'MON W3: Install stakes. Switch Ca+K to drench (500g each, separate passes, flush between). Start Boron foliar 1g/L on tips — weekly through fruit set.',
+      'Spray rotation W3–W5: alternate Garlic-Chilli / Neem Oil on Wed. Sat: NPK + fungicide FRAC rotation (M3→M1→4+M3) + insecticide IRAC rotation (3A→4A→5→28).',
+      'Zinc foliar monthly: ZnSO4 2g/L.',
+      '⚠️ HELICOVERPA BORER: monitor from W3. Inspect perimeter plants Tue. Entry holes + frass = threshold 3 plants → spray Chlorantraniliprole (IRAC 28) 0.5ml/L immediately.',
+      'Watch for crown rot lesions at soil line during pruning. If found: Metalaxyl-M drench to affected plant + 4 neighbours.',
+      'Twice-weekly pruning (Wed + Sat): 5cm air gap maintained, sanitised tools, cuts treated with copper 2g/L.',
+    ]
+  },
+  { week:6, phase:'🌼 Weeks 6–8 — Flowering (Field A)',
+    tasks:[
+      'Switch to HIGH-K NPK: 15-5-20 or 15-15-15 + 500g extra KNO3 per 500L tank. Apply Saturday via drip.',
+      'Ca Nitrate drench: 500g/500L twice weekly. NEVER miss during flowering.',
+      'All sprays AFTER 5pm only. NEVER spray onto open flowers.',
+      'Continue Boron foliar 1g/L weekly through fruit set. Tie flower-bearing branches individually.',
+      'Flower drop causes: water stress, boron deficiency, spray on open flowers, or extreme heat. Monitor daily.',
+      'Rain rule: if >15mm rain within 3hrs of any spray — reapply next dry day.',
+    ]
+  },
+  { week:9, phase:'🍎 Weeks 9–10 — Fruit Fill & PHI Compliance',
+    tasks:[
+      'Ca Nitrate drench twice weekly (500g/500L) — continue until last fruit harvested.',
+      'High-K NPK every Saturday.',
+      '⚠️ WEEK 10+ PHI COMPLIANCE: organics only — Neem Oil alternating with Garlic-Chilli every 3–4 days. Copper Hydroxide 2g/L for fungicide. ZERO synthetic insecticides.',
+      'Continue twice-weekly pruning. IRAC 28 (Chlorantraniliprole) for borer if threshold reached — last application must be 14+ days before harvest.',
+      'Inspect fruit daily: chilli ready when full-sized and showing colour change (green → red or as per variety). Firm texture = ready. Overripe = disease entry.',
+      'HARVEST: scissors only, leave 1cm stem, wear gloves. Grade A / B / C. Record weight per row section in logbook.',
+    ]
+  },
+  { week:11, phase:'🍅 Weeks 11–13 — Harvest & Post-Harvest',
+    tasks:[
+      'Harvest every 2–3 days — do not allow overripe fruits to remain on plant.',
+      'GRADING: Grade A (Export/Premium, uniform, firm, full colour, no blemishes). Grade B (Local, minor cosmetic marks). Grade C (Processing, no rot). NEVER discard C.',
+      'After first harvest flush: Urea top-dress 20g per plant. Resume NPK at full rate for second flowering.',
+      'Top-up mulch to 12cm if thinned.',
+      'Prune exhausted branches after harvest. Inspect crown for Phytophthora lesions — foot traffic during harvest damages roots.',
+      'Record cumulative harvest weight per row section. Report to manager weekly.',
+    ]
+  },
+];
+
+// Fallback generic schedule for unconfigured zones
+CROP_SCHEDULE['—'] = [
+  { week:1, phase:'📋 Monitoring', tasks:['Standard daily monitoring','Check irrigation system','Record any observations'] },
+];
+
+// Get planting dates from localStorage
+function getPlantingDates() {
+  try { return JSON.parse(localStorage.getItem('dv_planting_dates') || '{}'); } catch(e){ return {}; }
+}
+function savePlantingDates(d) {
+  localStorage.setItem('dv_planting_dates', JSON.stringify(d));
+}
+
+// Calculate current growth week for a zone
+function getGrowthWeek(zoneId) {
+  const dates = getPlantingDates();
+  const dateStr = dates[zoneId];
+  if (!dateStr) return null;
+  const planted = new Date(dateStr);
+  const today = new Date();
+  const diffDays = Math.floor((today - planted) / (1000*60*60*24));
+  if (diffDays < 0) return null; // future date
+  return Math.floor(diffDays / 7) + 1;
+}
+
+// Get this week's schedule for a zone
+function getZoneSchedule(zoneId) {
+  const zone = ZONES.find(z => z.id === zoneId);
+  if (!zone || !zone.crop || zone.crop === '—') return null;
+  const week = getGrowthWeek(zoneId);
+  if (!week) return null;
+
+  // Find the right schedule key (crop name may include details like "(~300 plants)")
+  let scheduleKey = zone.crop;
+  if (!CROP_SCHEDULE[scheduleKey]) {
+    // Try prefix match
+    scheduleKey = Object.keys(CROP_SCHEDULE).find(k => zone.crop.startsWith(k) || k.startsWith(zone.crop.split(' ')[0]));
+  }
+  if (!scheduleKey) return null;
+  const schedule = CROP_SCHEDULE[scheduleKey];
+
+  // Find the entry whose week is <= current week (use last applicable entry)
+  let entry = null;
+  for (let i = schedule.length - 1; i >= 0; i--) {
+    if (schedule[i].week <= week) { entry = schedule[i]; break; }
+  }
+  if (!entry) entry = schedule[0]; // fallback to first entry
+  return { week, crop: zone.crop, ...entry };
+}
 
 let currentUser = null;
 let currentZone = null;
@@ -951,242 +1297,419 @@ function saveDrafts(d) {
 }
 
 // ══════════════════════════════════════════════════════════════════
-// PASSWORD SYSTEM
+// PASSWORD SYNC SYSTEM
+// Passwords are stored locally AND synced to Google Sheets so all
+// devices share the same passwords once internet is available.
 // ══════════════════════════════════════════════════════════════════
-const ALL_USERS = [
-  'Onyinyechi Chinenye Precious',
-  'Angel Mbonu Chinaza',
-  'Elijah Okon Johnson',
-  'Worker 4',
-  'Worker 5',
-  'Worker 6',
-  'Manager'
-];
 
-// ── Manager password stored separately — never touched by cloud sync
-function getManagerPassword() {
-  return localStorage.getItem('dv_manager_pw') || '1234';
-}
-function setManagerPassword(pw) {
-  localStorage.setItem('dv_manager_pw', pw);
-}
+function getSyncUrl() { return localStorage.getItem('dv_sync_url') || ''; }
 
-// ── Worker passwords stored together and synced with cloud
-function getPasswords() {
-  try { return JSON.parse(localStorage.getItem('dv_passwords') || '{}'); } catch(e){ return {}; }
+// Local password cache
+function getLocalPasswords() {
+  try { return JSON.parse(localStorage.getItem('dv_staff_passwords') || '{}'); } catch(e) { return {}; }
 }
-function savePasswords(p) {
-  localStorage.setItem('dv_passwords', JSON.stringify(p));
-  // Push worker passwords to cloud (Manager never included)
-  pushPasswordsToCloud(p);
+function saveLocalPasswords(obj) {
+  localStorage.setItem('dv_staff_passwords', JSON.stringify(obj));
 }
-function getUserPassword(name) {
-  if (name === 'Manager') return getManagerPassword();
-  const passwords = getPasswords();
-  if (passwords[name] !== undefined) return passwords[name];
-  return name.split(' ')[0].toLowerCase();
+function getLocalManagerPin() {
+  return localStorage.getItem('dv_manager_pin') || '1234';
 }
-function setUserPassword(name, pw) {
-  if (name === 'Manager') {
-    setManagerPassword(pw);
-    return;
-  }
-  const passwords = getPasswords();
-  passwords[name] = pw;
-  savePasswords(passwords);
+function saveLocalManagerPin(pin) {
+  localStorage.setItem('dv_manager_pin', pin);
 }
 
-async function pushPasswordsToCloud(passwords) {
-  const url = localStorage.getItem('dv_sync_url');
+// Pull latest passwords from server and merge into local cache
+async function syncPasswordsFromServer() {
+  const url = getSyncUrl();
+  if (!url || !navigator.onLine) return;
+  try {
+    const res = await fetch(url + '?action=getPasswords');
+    const json = await res.json();
+    if (json.passwords) {
+      // Server is authoritative. Remove any local entries not on server (resets by manager).
+      const local = getLocalPasswords();
+      const merged = {};
+      // Start with local
+      Object.keys(local).forEach(k => {
+        const v = local[k];
+        const pw = typeof v === 'object' ? v.password : v;
+        if (pw && pw !== '__RESET__') merged[k] = v;
+      });
+      // Override with server (server always wins)
+      Object.keys(json.passwords).forEach(k => {
+        merged[k] = json.passwords[k];
+      });
+      // Remove anyone who was reset (not on server anymore)
+      Object.keys(local).forEach(k => {
+        if (!json.passwords[k]) delete merged[k];
+      });
+      saveLocalPasswords(merged);
+    }
+  } catch(e) { /* offline — use local */ }
+}
+
+// Pull manager PIN from server
+async function syncManagerPinFromServer() {
+  const url = getSyncUrl();
   if (!url) return;
   try {
-    // Manager password never goes to cloud — stored separately
-    const toSync = Object.assign({}, passwords);
-    delete toSync['Manager'];
-    const encoded = encodeURIComponent(JSON.stringify(toSync));
-    await fetch(url + '?action=save_passwords&passwords=' + encoded, {
-      method: 'GET',
-      mode: 'no-cors'
+    const res = await fetch(url + '?action=getManagerPin');
+    const json = await res.json();
+    if (json.pin) saveLocalManagerPin(json.pin);
+  } catch(e) { /* offline */ }
+}
+
+// Push a new/updated staff password to server
+async function pushPasswordToServer(name, password) {
+  const url = getSyncUrl();
+  if (!url) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setPassword', name, password })
     });
-  } catch(e) { /* silent fail */ }
+  } catch(e) { /* offline — will retry when setupSync is run */ }
 }
 
-// Full pull — manager only, used in sync button
-// Manager password is NEVER overwritten from cloud
-async function pullPasswordsFromCloud() {
-  const url = localStorage.getItem('dv_sync_url');
+// Push manager PIN to server
+async function pushManagerPinToServer(pin) {
+  const url = getSyncUrl();
   if (!url) return;
   try {
-    const res = await fetch(url + '?action=fetch_passwords');
-    const data = await res.json();
-    if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && Object.keys(data).length > 0) {
-      const knownUsers = ['Onyinyechi Chinenye Precious','Angel Mbonu Chinaza','Elijah Okon Johnson','Worker 4','Worker 5','Worker 6'];
-      const hasRealPasswords = Object.keys(data).some(k => knownUsers.includes(k));
-      if (hasRealPasswords) {
-        const local = getPasswords();
-        // Merge cloud into local — Manager key never in dv_passwords anyway
-        const merged = Object.assign({}, local, data);
-        delete merged['Manager'];
-        localStorage.setItem('dv_passwords', JSON.stringify(merged));
-      }
-    }
-  } catch(e) { /* silent fail */ }
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'setManagerPin', pin })
+    });
+  } catch(e) { /* offline */ }
 }
 
-// Single-user pull — workers only fetch their own password at login
-// Manager password is NEVER pulled from cloud — local only
-async function pullMyPasswordFromCloud(name) {
-  if (name === 'Manager') return; // Manager password never comes from cloud
-  const url = localStorage.getItem('dv_sync_url');
+// Log activity event to server (for manager notifications)
+async function logActivity(type, worker, zone, detail) {
+  const url = getSyncUrl();
   if (!url) return;
   try {
-    const res = await fetch(url + '?action=fetch_passwords');
-    const data = await res.json();
-    if (data && typeof data === 'object' && !data.error && !Array.isArray(data) && data[name] !== undefined) {
-      // Only update this one user's password locally — nothing else
-      const local = getPasswords();
-      local[name] = data[name];
-      // Never touch Manager password
-      delete local['Manager'];
-      localStorage.setItem('dv_passwords', JSON.stringify(local));
-    }
-  } catch(e) { /* silent fail */ }
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'logActivity', type, worker: worker||'', zone: zone||'', detail: detail||'', ts: new Date().toISOString() })
+    });
+  } catch(e) { /* offline */ }
 }
 
-async function syncPasswordsFromCloud() {
-  showToast('🔄 Syncing passwords from cloud...');
-  await pullPasswordsFromCloud();
-  renderPasswordManager();
-  showToast('✅ Passwords synced from cloud!');
-}
-
-async function syncMyOwnPassword() {
-  const name = currentUser.name;
-  const url = localStorage.getItem('dv_sync_url');
-  if (!url) { showToast('⚠️ No sync URL — ask manager to set it up'); return; }
-  showToast('🔄 Syncing your password...');
+// Pull recent activity for manager notifications
+async function fetchActivityLog(since) {
+  const url = getSyncUrl();
+  if (!url) return [];
   try {
-    const res = await fetch(url + '?action=fetch_passwords');
-    const data = await res.json();
-    if (data && typeof data === 'object' && !data.error && data[name] !== undefined) {
-      const local = getPasswords();
-      local[name] = data[name];
-      localStorage.setItem('dv_passwords', JSON.stringify(local));
-      showToast('✅ Password synced!');
-    } else {
-      showToast('⚠️ No password found in cloud for you');
-    }
-  } catch(e) {
-    showToast('❌ Sync failed — check your connection');
-  }
-}
-
-// Secret reset — triggered by tapping logo 7 times then entering master code
-let _logoTaps = 0;
-let _logoTimer = null;
-function onLogoTap() {
-  _logoTaps++;
-  clearTimeout(_logoTimer);
-  _logoTimer = setTimeout(() => { _logoTaps = 0; }, 3000);
-  if (_logoTaps >= 7) {
-    _logoTaps = 0;
-    const code = prompt('Enter master reset code:');
-    if (code === null) return;
-    // Master code is: DV2025 — only the farm owner knows this
-    if (code === 'DV2025') {
-      localStorage.removeItem('dv_passwords');
-      localStorage.removeItem('dv_manager_pw');
-      showToast('✅ Reset done. Manager password is now 1234');
-    } else {
-      showToast('❌ Incorrect code');
-    }
-  }
+    const param = since ? `&since=${encodeURIComponent(since)}` : '';
+    const res = await fetch(url + '?action=getActivity' + param);
+    const json = await res.json();
+    return json.events || [];
+  } catch(e) { return []; }
 }
 
 // ══════════════════════════════════════════════════════════════════
 // AUTH
 // ══════════════════════════════════════════════════════════════════
 function setLoginMode(mode) {
-  document.querySelectorAll('.login-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&mode==='staff')||(i===1&&mode==='manager')));
-  document.getElementById('staff-login').style.display = mode==='staff' ? '' : 'none';
-  document.getElementById('manager-login').style.display = mode==='manager' ? '' : 'none';
+  document.getElementById('staff-login').style.display = mode === 'staff' ? '' : 'none';
+  document.getElementById('manager-login').style.display = mode === 'manager' ? '' : 'none';
+  if (mode === 'manager') {
+    document.getElementById('managerPin').focus();
+    syncManagerPinFromServer(); // refresh manager pin on switch
+  }
 }
 
-function staffLogin() {
+// When a name is selected: pull server passwords then show correct password UI
+async function onStaffNameChange() {
   const name = document.getElementById('staffName').value;
+  const pwGroup        = document.getElementById('staffPasswordGroup');
+  const pwConfirmGroup = document.getElementById('staffPasswordConfirmGroup');
+  const pwLabel        = document.getElementById('staffPasswordLabel');
+  const pwInput        = document.getElementById('staffPassword');
+
+  if (!name) {
+    pwGroup.style.display = 'none';
+    pwConfirmGroup.style.display = 'none';
+    return;
+  }
+
+  // Sync from server first so we always have the latest passwords
+  await syncPasswordsFromServer();
+
+  const passwords = getLocalPasswords();
+  const existing = passwords[name];
+
+  pwGroup.style.display = '';
+  pwInput.value = '';
+  document.getElementById('staffPasswordConfirm').value = '';
+
+  if (existing) {
+    pwLabel.textContent = 'Password';
+    pwInput.placeholder = 'Enter your password';
+    pwConfirmGroup.style.display = 'none';
+  } else {
+    pwLabel.textContent = '🔐 Create Your Password (first time)';
+    pwInput.placeholder = 'Choose a password (min 4 characters)';
+    pwConfirmGroup.style.display = '';
+  }
+  pwInput.focus();
+}
+
+async function staffLogin() {
+  const name = document.getElementById('staffName').value;
+  const pw   = document.getElementById('staffPassword').value;
   const zone = document.getElementById('staffZone').value;
-  const pw = document.getElementById('staffPassword').value;
+
   if (!name) { showToast('Please select your name'); return; }
+  if (!pw)   { showToast('Please enter your password'); return; }
   if (!zone) { showToast('Please select your zone'); return; }
-  if (!pw) { showToast('Please enter your password'); return; }
-  if (pw !== getUserPassword(name)) { showToast('Incorrect password'); return; }
+
+  const passwords = getLocalPasswords();
+
+  if (passwords[name]) {
+    // ── Returning staff: verify
+    if (pw !== passwords[name].password && pw !== passwords[name]) {
+      showToast('❌ Incorrect password — try again');
+      document.getElementById('staffPassword').value = '';
+      document.getElementById('staffPassword').focus();
+      return;
+    }
+  } else {
+    // ── First time: set password
+    const confirm = document.getElementById('staffPasswordConfirm').value;
+    if (!confirm) { showToast('Please confirm your password'); return; }
+    if (pw !== confirm) {
+      showToast('❌ Passwords do not match');
+      document.getElementById('staffPasswordConfirm').value = '';
+      return;
+    }
+    if (pw.length < 4) { showToast('Password must be at least 4 characters'); return; }
+
+    // Save locally
+    passwords[name] = { password: pw, lastSet: new Date().toISOString() };
+    saveLocalPasswords(passwords);
+
+    // Push to server (async — works offline too, will sync later)
+    pushPasswordToServer(name, pw);
+    showToast('✅ Password created! Syncing to all devices...');
+  }
+
+  // Log the login event for manager notification + update lastLogin timestamp
+  logActivity('staff_login', name, zone, `${name} logged in to ${ZONES.find(z=>z.id===zone)?.label||zone}`);
+  const syncUrl = getSyncUrl();
+  if (syncUrl && navigator.onLine) {
+    fetch(syncUrl, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'updateLastLogin', name }) }).catch(()=>{});
+  }
+
   currentUser = { name, role: 'staff', zone };
   showScreen('screen-home');
   renderHome();
 }
 
-function managerLogin() {
-  const pw = document.getElementById('managerPassword').value;
-  if (!pw) { showToast('Please enter your password'); return; }
-  if (pw !== getUserPassword('Manager')) { showToast('Incorrect password'); return; }
+async function managerLogin() {
+  await syncManagerPinFromServer(); // always get latest PIN
+  const pin    = document.getElementById('managerPin').value;
+  const stored = getLocalManagerPin();
+  if (pin !== stored) {
+    showToast('❌ Incorrect PIN');
+    document.getElementById('managerPin').value = '';
+    return;
+  }
+  logActivity('manager_login', 'Manager', '', 'Manager logged in to dashboard');
   currentUser = { name: 'Manager', role: 'manager' };
   showScreen('screen-manager');
   renderDashboard();
+  startManagerNotifPoll();
 }
 
-// ── Change Password (staff) ────────────────────────────────────────
-function openChangePassword() {
-  document.getElementById('cpw-current').value = '';
-  document.getElementById('cpw-new').value = '';
-  document.getElementById('cpw-confirm').value = '';
-  document.getElementById('modal-change-pw').style.display = 'flex';
-}
-function savePasswordChange() {
-  const current = document.getElementById('cpw-current').value;
-  const nw = document.getElementById('cpw-new').value;
-  const confirm = document.getElementById('cpw-confirm').value;
-  const name = currentUser.name;
-  if (!current || !nw || !confirm) { showToast('Please fill all fields'); return; }
-  if (current !== getUserPassword(name)) { showToast('Current password is incorrect'); return; }
-  if (nw !== confirm) { showToast('New passwords do not match'); return; }
-  if (nw.length < 3) { showToast('Password must be at least 3 characters'); return; }
-  setUserPassword(name, nw);
-  closeModal('modal-change-pw');
-  showToast('✅ Password updated successfully!');
-}
-
-// ── Password Manager (manager view) ───────────────────────────────
-function openPasswordManager() {
-  renderPasswordManager();
-  document.getElementById('modal-pw-manager').style.display = 'flex';
-}
-function renderPasswordManager() {
-  const list = document.getElementById('pw-manager-list');
-  list.innerHTML = ALL_USERS.map(name => {
-    const pw = getUserPassword(name);
-    const isManager = name === 'Manager';
-    return `
-      <div style="border:1px solid #e0e0e0;border-radius:10px;padding:0.85rem 1rem;margin-bottom:0.75rem">
-        <div style="font-weight:600;font-size:0.95rem;margin-bottom:0.5rem">${isManager ? '👔 ' : '👤 '}${name}</div>
-        <div style="display:flex;align-items:center;gap:0.5rem">
-          <input type="text" value="${pw}" id="pw-field-${name.replace(/\s/g,'_')}"
-            style="flex:1;border:1px solid #ddd;border-radius:8px;padding:0.4rem 0.6rem;font-size:0.9rem;font-family:monospace">
-          <button onclick="saveMgrPassword('${name.replace(/'/g,"\\'")}','${name.replace(/\s/g,'_')}')"
-            style="background:#7b1fa2;color:#fff;border:none;border-radius:8px;padding:0.4rem 0.75rem;cursor:pointer;font-size:0.85rem">Save</button>
+// ── Manager: change own PIN ───────────────────────────────────
+function openChangeManagerPin() {
+  const existing = document.getElementById('managerPinModal');
+  if (existing) existing.remove();
+  const modal = document.createElement('div');
+  modal.id = 'managerPinModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+  modal.innerHTML = `
+    <div style="background:white;border-radius:14px;width:100%;max-width:360px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+      <div style="background:linear-gradient(135deg,#1a3d1f,#2e7d32);color:white;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-weight:700;">🔐 Change Manager PIN</div>
+        <button onclick="document.getElementById('managerPinModal').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;">✕</button>
+      </div>
+      <div style="padding:1.25rem;">
+        <div style="font-size:0.82rem;color:#555;margin-bottom:1rem;">New PIN will sync to all devices automatically.</div>
+        <div style="margin-bottom:0.75rem;">
+          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">New PIN</label>
+          <input type="password" id="newManagerPin" placeholder="Enter new PIN" maxlength="12"
+            style="width:100%;border:1.5px solid #c8e6c9;border-radius:8px;padding:0.5rem 0.75rem;font-size:0.9rem;box-sizing:border-box;">
         </div>
-        <div style="font-size:0.78rem;color:#888;margin-top:0.35rem">Default: ${isManager ? '1234' : name.split(' ')[0].toLowerCase()}</div>
-      </div>`;
-  }).join('');
-}
-function saveMgrPassword(name, idKey) {
-  const val = document.getElementById('pw-field-' + idKey).value.trim();
-  if (!val) { showToast('Password cannot be empty'); return; }
-  setUserPassword(name, val);
-  showToast(`✅ Password updated for ${name.split(' ')[0]}`);
+        <div style="margin-bottom:1rem;">
+          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">Confirm PIN</label>
+          <input type="password" id="newManagerPinConfirm" placeholder="Re-enter new PIN" maxlength="12"
+            style="width:100%;border:1.5px solid #c8e6c9;border-radius:8px;padding:0.5rem 0.75rem;font-size:0.9rem;box-sizing:border-box;"
+            onkeydown="if(event.key==='Enter') saveManagerPin()">
+        </div>
+        <button onclick="saveManagerPin()" style="width:100%;background:linear-gradient(135deg,#1a3d1f,#2e7d32);color:white;border:none;border-radius:8px;padding:0.75rem;font-weight:700;font-size:0.95rem;cursor:pointer;">
+          ✅ Save & Sync PIN
+        </button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+  document.getElementById('newManagerPin').focus();
 }
 
-function closeModal(id) {
-  document.getElementById(id).style.display = 'none';
+async function saveManagerPin() {
+  const newPin = document.getElementById('newManagerPin').value;
+  const confirm = document.getElementById('newManagerPinConfirm').value;
+  if (!newPin || newPin.length < 3) { showToast('PIN must be at least 3 characters'); return; }
+  if (newPin !== confirm) { showToast('❌ PINs do not match'); return; }
+
+  saveLocalManagerPin(newPin);
+  await pushManagerPinToServer(newPin);
+  logActivity('manager_pin_changed', 'Manager', '', 'Manager PIN updated and synced');
+  document.getElementById('managerPinModal').remove();
+  showToast('✅ Manager PIN saved and synced to all devices');
+}
+
+// ── Manager: view all staff passwords + reset ─────────────────
+async function openStaffPasswords() {
+  await syncPasswordsFromServer(); // always get latest
+  const passwords = getLocalPasswords();
+  const names = Object.keys(passwords);
+
+  const existing = document.getElementById('staffPwModal');
+  if (existing) existing.remove();
+
+  const modal = document.createElement('div');
+  modal.id = 'staffPwModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+
+  const rows = names.length === 0
+    ? '<p style="color:#888;font-size:0.85rem;text-align:center;padding:1rem;">No staff passwords set yet. Each worker sets their password on first login.</p>'
+    : names.map(n => {
+        const entry = passwords[n];
+        const pw = typeof entry === 'object' ? entry.password : entry;
+        const lastSet = typeof entry === 'object' && entry.lastSet ? new Date(entry.lastSet).toLocaleDateString() : '—';
+        return `
+          <div style="padding:0.65rem 0;border-bottom:1px dashed #eee;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;">
+              <div>
+                <div style="font-size:0.88rem;font-weight:700;color:#222;">${n}</div>
+                <div style="font-size:0.72rem;color:#888;">Set: ${lastSet} &nbsp;|&nbsp; PIN: <span style="font-family:monospace;letter-spacing:2px;">${pw}</span></div>
+              </div>
+              <button onclick="resetStaffPw('${n.replace(/'/g,"\\'")}');document.getElementById('staffPwModal').remove();"
+                style="background:#fff3e0;border:1.5px solid #ffcc80;color:#e65100;border-radius:8px;padding:0.2rem 0.6rem;font-size:0.75rem;font-weight:700;cursor:pointer;flex-shrink:0;">
+                Reset
+              </button>
+            </div>
+          </div>`;
+      }).join('');
+
+  modal.innerHTML = `
+    <div style="background:white;border-radius:14px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+      <div style="background:linear-gradient(135deg,#e65100,#ef6c00);color:white;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;">
+        <div><div style="font-weight:700;">🔑 Staff Passwords</div><div style="font-size:0.72rem;opacity:0.85;">Synced from all devices</div></div>
+        <button onclick="document.getElementById('staffPwModal').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;">✕</button>
+      </div>
+      <div style="padding:0.75rem 1rem;">${rows}</div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function resetStaffPw(name) {
+  const passwords = getLocalPasswords();
+  delete passwords[name];
+  saveLocalPasswords(passwords);
+  // Push deletion to server by setting empty password marker — server handles reset
+  const url = getSyncUrl();
+  if (url) {
+    try {
+      await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'setPassword', name, password:'__RESET__' }) });
+    } catch(e) {}
+  }
+  logActivity('password_reset', 'Manager', '', `Manager reset password for ${name}`);
+  showToast(`🔑 Password reset for ${name}. They will set a new one on next login.`);
+}
+
+// ── Manager notification polling ──────────────────────────────
+let _notifPollTimer = null;
+let _lastNotifTs = null;
+
+function startManagerNotifPoll() {
+  if (_notifPollTimer) clearInterval(_notifPollTimer);
+  _lastNotifTs = new Date().toISOString();
+  _notifPollTimer = setInterval(pollManagerNotifs, 30000); // every 30 seconds
+  renderNotifBadge(0);
+}
+
+function stopManagerNotifPoll() {
+  if (_notifPollTimer) { clearInterval(_notifPollTimer); _notifPollTimer = null; }
+}
+
+let _pendingNotifs = [];
+
+async function pollManagerNotifs() {
+  if (!currentUser || currentUser.role !== 'manager') { stopManagerNotifPoll(); return; }
+  const events = await fetchActivityLog(_lastNotifTs);
+  if (events.length > 0) {
+    _lastNotifTs = events[0].ts; // newest is first
+    _pendingNotifs = [...events, ..._pendingNotifs].slice(0, 50);
+    renderNotifBadge(_pendingNotifs.length);
+  }
+}
+
+function renderNotifBadge(count) {
+  const btn = document.getElementById('notifBtn');
+  if (!btn) return;
+  btn.textContent = count > 0 ? `🔔 ${count}` : '🔔';
+  btn.style.background = count > 0 ? '#e53935' : '#e8f5e9';
+  btn.style.color = count > 0 ? 'white' : '#1b5e20';
+  btn.style.borderColor = count > 0 ? '#c62828' : '#66bb6a';
+}
+
+function openNotifications() {
+  const existing = document.getElementById('notifModal');
+  if (existing) existing.remove();
+  _pendingNotifs = _pendingNotifs; // keep list
+
+  const modal = document.createElement('div');
+  modal.id = 'notifModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+
+  const icons = { staff_login:'👤', manager_login:'🔐', report:'📋', password_set:'🔑', manager_pin_changed:'🔐', password_reset:'🔑' };
+
+  const rows = _pendingNotifs.length === 0
+    ? '<p style="color:#888;text-align:center;padding:1rem;font-size:0.85rem;">No new activity yet. This panel refreshes every 30 seconds.</p>'
+    : _pendingNotifs.map(e => {
+        const icon = icons[e.type] || '📌';
+        const time = e.ts ? new Date(e.ts).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}) : '';
+        const date = e.ts ? new Date(e.ts).toLocaleDateString() : '';
+        return `<div style="display:flex;gap:0.75rem;padding:0.65rem 0;border-bottom:1px dashed #eee;align-items:flex-start;">
+          <div style="font-size:1.2rem;flex-shrink:0;">${icon}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:0.85rem;font-weight:700;color:#222;">${e.worker||'System'}</div>
+            <div style="font-size:0.8rem;color:#555;">${e.detail||e.type}</div>
+            ${e.zone ? `<div style="font-size:0.72rem;color:#888;">Zone: ${e.zone}</div>` : ''}
+          </div>
+          <div style="font-size:0.7rem;color:#aaa;text-align:right;flex-shrink:0;">${time}<br>${date}</div>
+        </div>`;
+      }).join('');
+
+  modal.innerHTML = `
+    <div style="background:white;border-radius:14px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+      <div style="background:linear-gradient(135deg,#0d47a1,#1565c0);color:white;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1;">
+        <div><div style="font-weight:700;">🔔 Activity Notifications</div><div style="font-size:0.72rem;opacity:0.85;">Live from all devices — refreshes every 30s</div></div>
+        <button onclick="document.getElementById('notifModal').remove();_pendingNotifs=[];renderNotifBadge(0);" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;">✕</button>
+      </div>
+      <div style="padding:0.75rem 1rem;">${rows}</div>
+    </div>`;
+  document.body.appendChild(modal);
+  _pendingNotifs = [];
+  renderNotifBadge(0);
 }
 
 function setupSync() {
@@ -1198,47 +1721,25 @@ function setupSync() {
   );
   if (url && url.startsWith('https://')) {
     localStorage.setItem('dv_sync_url', url);
-    showToast('✅ Sync URL saved! Reports will now sync automatically.');
-    // Try to sync any pending reports immediately
+    showToast('✅ Sync URL saved! Syncing passwords and reports...');
+    syncPasswordsFromServer();
+    syncManagerPinFromServer();
     syncPending();
   } else if (url !== null) {
     showToast('⚠️ Invalid URL — must start with https://');
   }
 }
 
-async function pullFromCloud() {
-  const url = localStorage.getItem('dv_sync_url');
-  if (!url) {
-    showToast('⚠️ No sync URL set — tap ☁️ Setup Sync first.');
-    return;
-  }
-  showToast('🔄 Fetching latest data from Google Sheet…');
-  try {
-    const res = await fetch(url + '?action=fetch');
-    const rows = await res.json();
-    if (!Array.isArray(rows)) throw new Error('Unexpected response');
-
-    const existing = getReports();
-    const existingById = {};
-    existing.forEach(r => existingById[r.id] = r);
-
-    rows.forEach(r => { existingById[r.id] = r; });
-
-    const merged = Object.values(existingById);
-    saveReports(merged);
-    renderDashboard();
-    showToast('✅ Data refreshed — ' + rows.length + ' reports loaded from Sheet.');
-  } catch(err) {
-    showToast('❌ Refresh failed: ' + err.message);
-  }
-}
-
 function logout() {
+  stopManagerNotifPoll();
   currentUser = null;
   document.getElementById('staffName').value = '';
   document.getElementById('staffZone').value = '';
   document.getElementById('staffPassword').value = '';
-  document.getElementById('managerPassword').value = '';
+  document.getElementById('staffPasswordConfirm').value = '';
+  document.getElementById('staffPasswordGroup').style.display = 'none';
+  document.getElementById('staffPasswordConfirmGroup').style.display = 'none';
+  document.getElementById('managerPin').value = '';
   showScreen('screen-login');
 }
 
@@ -1301,6 +1802,8 @@ function renderHome() {
   render('ghList', 'gh');
   render('fieldList', 'field');
   render('infraList', 'infra');
+  // Render this worker's zone schedule reminder
+  renderHomeScheduleReminder();
   // Re-apply faded photos to header
   setTimeout(initImages, 50);
 }
@@ -1784,6 +2287,9 @@ function renderDashboard() {
     { v: todayR.filter(r => r.data?.irrig_done === 'yes').length, l: 'Irrigated' },
   ].map(s => `<div class="mgr-stat"><div class="val" style="${s.v > 0 && s.l.includes('Critical') ? 'color:var(--red-600)' : ''}">${s.v}</div><div class="lbl">${s.l.replace('\n','<br>')}</div></div>`).join('');
 
+  // Render weekly schedule cards
+  renderScheduleCards();
+
   const reportsEl = document.getElementById('mgrReports');
 
   if (filtered.length === 0) {
@@ -1898,6 +2404,246 @@ async function syncPending() {
   if (currentUser?.role === 'manager') renderDashboard();
 }
 
+// ══════════════════════════════════════════════════════════════════
+// SCHEDULE SYSTEM — Planting date setup & weekly task rendering
+// ══════════════════════════════════════════════════════════════════
+
+function openScheduleSetup() {
+  // Build modal overlay
+  const existing = document.getElementById('scheduleSetupModal');
+  if (existing) existing.remove();
+
+  const plantedDates = getPlantingDates();
+
+  const modal = document.createElement('div');
+  modal.id = 'scheduleSetupModal';
+  modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem;';
+
+  const cropZones = ZONES.filter(z => z.crop && z.crop !== '—');
+
+  modal.innerHTML = `
+    <div style="background:white;border-radius:16px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+      <div style="background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:white;padding:1rem 1.25rem;border-radius:16px 16px 0 0;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-weight:700;font-size:1rem;">📅 Set Planting Dates</div>
+          <div style="font-size:0.75rem;opacity:0.85;margin-top:2px;">App will calculate growth week automatically</div>
+        </div>
+        <button onclick="document.getElementById('scheduleSetupModal').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50%;width:28px;height:28px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+      <div style="padding:1rem;">
+        <div style="font-size:0.78rem;color:#666;margin-bottom:1rem;background:#f3e5f5;padding:0.6rem 0.8rem;border-radius:8px;">
+          💡 Enter the date each zone was <strong>transplanted</strong>. The app will show the correct weekly tasks based on days since planting.
+        </div>
+        ${cropZones.map(z => {
+          const week = getGrowthWeek(z.id);
+          const weekLabel = week ? `Week ${week}` : 'No date set';
+          const weekColor = week ? '#1b5e20' : '#e65100';
+          const weekBg = week ? '#e8f5e9' : '#fff3e0';
+          return `
+          <div style="padding:0.65rem 0;border-bottom:1px dashed #e0e0e0;">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.5rem;margin-bottom:0.4rem;">
+              <div>
+                <span style="font-weight:700;font-size:0.9rem;">${z.icon} ${z.label}</span>
+                <span style="font-size:0.72rem;color:#888;margin-left:6px;">${z.crop}</span>
+              </div>
+              <span style="font-size:0.72rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:10px;background:${weekBg};color:${weekColor};">${weekLabel}</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.5rem;">
+              <label style="font-size:0.75rem;color:#555;white-space:nowrap;">Planting date:</label>
+              <input type="date" id="pd_${z.id}" value="${plantedDates[z.id]||''}"
+                style="border:1.5px solid #c8e6c9;border-radius:6px;padding:0.25rem 0.5rem;font-size:0.8rem;flex:1;"
+                onchange="savePlantingDateField('${z.id}',this.value)">
+              ${plantedDates[z.id] ? `<button onclick="clearPlantingDate('${z.id}')" style="background:#ffebee;border:1px solid #ef9a9a;color:#c62828;border-radius:6px;padding:0.2rem 0.4rem;font-size:0.72rem;cursor:pointer;">Clear</button>` : ''}
+            </div>
+          </div>`;
+        }).join('')}
+        <div style="margin-top:1rem;display:flex;gap:0.5rem;">
+          <button onclick="document.getElementById('scheduleSetupModal').remove();renderDashboard();"
+            style="flex:1;background:linear-gradient(135deg,#6a1b9a,#8e24aa);color:white;border:none;border-radius:8px;padding:0.7rem;font-weight:700;cursor:pointer;font-size:0.9rem;">
+            ✓ Done — Save All Dates
+          </button>
+        </div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+}
+
+function savePlantingDateField(zoneId, value) {
+  const dates = getPlantingDates();
+  if (value) {
+    dates[zoneId] = value;
+  } else {
+    delete dates[zoneId];
+  }
+  savePlantingDates(dates);
+  // Refresh week label in modal
+  const week = getGrowthWeek(zoneId);
+  // Rebuild modal to update week labels
+  openScheduleSetup();
+  showToast(`📅 Planting date saved for ${ZONES.find(z=>z.id===zoneId)?.label}`);
+}
+
+function clearPlantingDate(zoneId) {
+  const dates = getPlantingDates();
+  delete dates[zoneId];
+  savePlantingDates(dates);
+  openScheduleSetup();
+  showToast('Date cleared');
+}
+
+function renderScheduleCards() {
+  const el = document.getElementById('mgrScheduleCards');
+  if (!el) return;
+
+  const cropZones = ZONES.filter(z => z.crop && z.crop !== '—');
+  let html = '';
+
+  const noDateZones = cropZones.filter(z => !getGrowthWeek(z.id));
+  if (noDateZones.length > 0) {
+    html += `<div class="schedule-no-date">⚠️ ${noDateZones.length} zone(s) have no planting date set. Tap <strong>📅 Set Planting Dates</strong> below to configure them.</div>`;
+  }
+
+  cropZones.forEach(z => {
+    const sched = getZoneSchedule(z.id);
+    if (!sched) {
+      html += `
+        <div class="schedule-card">
+          <div class="schedule-card-header">
+            <span class="schedule-zone-badge">${z.id.toUpperCase()}</span>
+            <div class="schedule-zone-info">
+              <div class="schedule-zone-label">${z.icon} ${z.label}</div>
+              <div class="schedule-crop-name">${z.crop}</div>
+            </div>
+            <span style="font-size:0.75rem;color:#e65100;background:#fff3e0;padding:0.2rem 0.5rem;border-radius:8px;">No date set</span>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const isLate = sched.week > (CROP_SCHEDULE[z.crop]?.length || 15);
+    const weekLabel = isLate ? `Week ${sched.week} (End cycle)` : `Week ${sched.week}`;
+    const weekClass = isLate ? 'schedule-week-pill overdue' : 'schedule-week-pill';
+
+    html += `
+      <div class="schedule-card">
+        <div class="schedule-card-header" onclick="toggleScheduleCard('sc_${z.id}')">
+          <span class="schedule-zone-badge">${z.id.toUpperCase()}</span>
+          <div class="schedule-zone-info">
+            <div class="schedule-zone-label">${z.icon} ${z.label}</div>
+            <div class="schedule-crop-name">${sched.crop}</div>
+          </div>
+          <span class="${weekClass}">${weekLabel}</span>
+          <span class="schedule-phase-tag">${sched.phase}</span>
+          <span style="color:#aaa;font-size:0.8rem;margin-left:4px;">▼</span>
+        </div>
+        <div class="schedule-card-body" id="sc_${z.id}">
+          <div class="schedule-task-list">
+            <div style="font-size:0.72rem;color:#888;margin-bottom:0.5rem;">✅ Tasks to complete this week:</div>
+            ${sched.tasks.map((t,i) => `
+              <div class="schedule-task-item">
+                <div class="schedule-task-check" id="stc_${z.id}_${i}" onclick="toggleTaskCheck('stc_${z.id}_${i}')"></div>
+                <span>${t}</span>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>`;
+  });
+
+  el.innerHTML = html || '<p style="color:#aaa;font-size:0.85rem;text-align:center;padding:1rem;">No zones configured yet.</p>';
+}
+
+function toggleScheduleCard(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('open');
+}
+
+function toggleTaskCheck(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('done');
+}
+
+// Worker home screen: show schedule for the worker's assigned zone
+function renderHomeScheduleReminder() {
+  const el = document.getElementById('homeScheduleReminder');
+  if (!el || !currentUser?.zone) return;
+
+  const zone = ZONES.find(z => z.id === currentUser.zone);
+  if (!zone || !zone.crop || zone.crop === '—') { el.innerHTML = ''; return; }
+
+  const sched = getZoneSchedule(currentUser.zone);
+  if (!sched) {
+    el.innerHTML = `
+      <div style="margin:0 1rem 1rem;background:#fff3e0;border:1.5px dashed #fbc02d;border-radius:10px;padding:0.75rem 1rem;font-size:0.82rem;color:#e65100;">
+        ⚠️ No planting date set for <strong>${zone.label}</strong>. Ask your manager to set it.
+      </div>`;
+    return;
+  }
+
+  const topTasks = sched.tasks.slice(0, 4); // show top 4 tasks
+  el.innerHTML = `
+    <div class="home-schedule-banner" style="margin:0 1rem 0.5rem;">
+      <div class="home-schedule-header">
+        📅 This Week — ${zone.label}
+        <span style="margin-left:auto;background:rgba(255,255,255,0.2);padding:0.1rem 0.4rem;border-radius:8px;font-size:0.7rem;">Week ${sched.week}</span>
+      </div>
+      <div class="home-schedule-body">
+        <div class="home-schedule-meta">
+          <span class="home-schedule-phase">${sched.phase}</span>
+          <span>${sched.crop}</span>
+        </div>
+        ${topTasks.map(t => `
+          <div class="home-task-row">
+            <div class="home-task-dot"></div>
+            <span>${t}</span>
+          </div>`).join('')}
+        ${sched.tasks.length > 4 ? `<div style="font-size:0.75rem;color:#888;margin-top:0.4rem;text-align:center;">+${sched.tasks.length-4} more tasks — see manager dashboard</div>` : ''}
+      </div>
+    </div>`;
+}
+async function fetchFromSheets() {
+  const url = localStorage.getItem('dv_sync_url');
+  if (!url) {
+    showToast('⚠️ No sync URL set — tap ☁️ Setup Sync first');
+    return;
+  }
+  if (!navigator.onLine) {
+    showToast('⚠️ You are offline — cannot fetch reports');
+    return;
+  }
+  const btn = document.getElementById('fetchBtn');
+  if (btn) { btn.textContent = '⏳ Fetching…'; btn.disabled = true; }
+
+  try {
+    const resp = await fetch(url + '?action=getReports', { method: 'GET' });
+    const json = await resp.json();
+
+    if (!json.reports || !Array.isArray(json.reports)) {
+      showToast('⚠️ No report data returned — check Apps Script update');
+      return;
+    }
+
+    // Merge fetched reports into local storage (fetched data wins for same id)
+    const local = getReports();
+    const localMap = {};
+    local.forEach(r => { localMap[r.id] = r; });
+
+    json.reports.forEach(r => {
+      localMap[r.id] = { ...localMap[r.id], ...r, synced: true };
+    });
+
+    const merged = Object.values(localMap);
+    saveReports(merged);
+    renderDashboard();
+    showToast(`✅ Fetched ${json.reports.length} reports from Google Sheets`);
+  } catch(err) {
+    showToast('❌ Fetch failed — check URL and try again');
+    console.error('fetchFromSheets error:', err);
+  } finally {
+    if (btn) { btn.textContent = '🔄 Fetch Reports'; btn.disabled = false; }
+  }
+}
+
 // Seed some demo data for immediate usefulness
 (function seedDemo() {
   const reports = getReports();
@@ -1905,7 +2651,7 @@ async function syncPending() {
   const d = todayKey();
   const demos = [
     { zone:'gh1', worker:'Onyinyechi Chinenye Precious', status:'good', crop:'Tomatoes', obs:'Plants looking healthy. New flowers forming on rows 3-5.', diag:'Normal flowering stage', action:'Continue regular irrigation', harvest_qty:'42' },
-    { zone:'gh3', worker:'Angel Mbonu Chinaza', status:'monitor', crop:'Cucumber', obs:'Yellow patches on leaves in row 2, approx 8 plants affected', diag:'Possibly magnesium deficiency or early fungal', action:'Applied foliar spray, monitor for 2 days', harvest_qty:'' },
+    { zone:'gh3', worker:'Angel Mbonu Chniaza', status:'monitor', crop:'Cucumber', obs:'Yellow patches on leaves in row 2, approx 8 plants affected', diag:'Possibly magnesium deficiency or early fungal', action:'Applied foliar spray, monitor for 2 days', harvest_qty:'' },
   ];
   demos.forEach((d2,i) => {
     reports.push({
@@ -2002,31 +2748,10 @@ function setTopbarLogo() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initImages();
-  // Show iOS install banner if on Safari/iOS and not yet dismissed
-  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
-  const dismissed = localStorage.getItem('dv_ios_banner_dismissed');
-  if (isIos && !isInStandaloneMode && !dismissed) {
-    setTimeout(() => {
-      document.getElementById('ios-install-banner').style.display = 'block';
-    }, 2000);
-  }
 });
 
 // Init
 if (!navigator.onLine) document.getElementById('offlineBanner').classList.add('show');
 </script>
-
-<!-- ══ iOS INSTALL BANNER ═══════════════════════════════════════ -->
-<div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a3d1f;color:white;padding:1rem 1.25rem;padding-bottom:max(1rem,env(safe-area-inset-bottom));z-index:10000;box-shadow:0 -4px 20px rgba(0,0,0,0.3)">
-  <div style="display:flex;align-items:center;gap:0.75rem">
-    <span style="font-size:2rem">🌿</span>
-    <div style="flex:1">
-      <div style="font-weight:700;font-size:0.9rem">Add to Home Screen</div>
-      <div style="font-size:0.78rem;color:#a5d6a7;margin-top:2px">Tap <strong>Share</strong> → <strong>Add to Home Screen</strong> for the best experience</div>
-    </div>
-    <button onclick="document.getElementById('ios-install-banner').style.display='none';localStorage.setItem('dv_ios_banner_dismissed','1')" style="background:rgba(255,255,255,0.15);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">✕</button>
-  </div>
-</div>
 </body>
 </html>
