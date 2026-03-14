@@ -848,10 +848,27 @@ body {
     <!-- Manager login — hidden by default -->
     <div id="manager-login" style="display:none">
       <div class="field-group">
-        <label>Manager PIN</label>
-        <input type="password" id="managerPin" placeholder="Enter PIN (default: 1234)" maxlength="6"
+        <label>Your Name</label>
+        <select id="managerName" onchange="onManagerNameChange()">
+          <option value="">Select your name...</option>
+          <option value="Manager">Manager</option>
+        </select>
+      </div>
+
+      <!-- Password field — shown after name selected -->
+      <div class="field-group" id="managerPasswordGroup" style="display:none">
+        <label id="managerPasswordLabel">Password</label>
+        <input type="password" id="managerPin" placeholder="Enter your password" maxlength="20"
           onkeydown="if(event.key==='Enter') managerLogin()">
       </div>
+
+      <!-- First-time: confirm password -->
+      <div class="field-group" id="managerPasswordConfirmGroup" style="display:none">
+        <label>Confirm Password</label>
+        <input type="password" id="managerPinConfirm" placeholder="Re-enter your password" maxlength="20"
+          onkeydown="if(event.key==='Enter') managerLogin()">
+      </div>
+
       <button class="btn-primary" onclick="managerLogin()">View Dashboard →</button>
       <div style="text-align:center;margin-top:1.2rem;">
         <button onclick="setLoginMode('staff')" style="background:none;border:none;color:rgba(255,255,255,0.55);font-size:0.78rem;cursor:pointer;text-decoration:underline;">← Back to Staff Login</button>
@@ -1414,12 +1431,52 @@ async function fetchActivityLog(since) {
 // AUTH
 // ══════════════════════════════════════════════════════════════════
 function setLoginMode(mode) {
-  document.getElementById('staff-login').style.display = mode === 'staff' ? '' : 'none';
+  document.getElementById('staff-login').style.display   = mode === 'staff'   ? '' : 'none';
   document.getElementById('manager-login').style.display = mode === 'manager' ? '' : 'none';
   if (mode === 'manager') {
-    document.getElementById('managerPin').focus();
-    syncManagerPinFromServer(); // refresh manager pin on switch
+    syncManagerPinFromServer();
+    // Reset manager form to clean state
+    document.getElementById('managerName').value = '';
+    document.getElementById('managerPasswordGroup').style.display = 'none';
+    document.getElementById('managerPasswordConfirmGroup').style.display = 'none';
+    document.getElementById('managerPin').value = '';
+    document.getElementById('managerPinConfirm').value = '';
   }
+}
+
+// When "Manager" is selected from the dropdown — show password field
+async function onManagerNameChange() {
+  const name = document.getElementById('managerName').value;
+  const pwGroup        = document.getElementById('managerPasswordGroup');
+  const pwConfirmGroup = document.getElementById('managerPasswordConfirmGroup');
+  const pwLabel        = document.getElementById('managerPasswordLabel');
+  const pwInput        = document.getElementById('managerPin');
+
+  if (!name) {
+    pwGroup.style.display = 'none';
+    pwConfirmGroup.style.display = 'none';
+    return;
+  }
+
+  // Pull latest manager PIN from server
+  await syncManagerPinFromServer();
+  const storedPin = getLocalManagerPin();
+  const isFirstTime = (storedPin === '1234' || !storedPin);
+
+  pwGroup.style.display = '';
+  pwInput.value = '';
+  document.getElementById('managerPinConfirm').value = '';
+
+  if (isFirstTime) {
+    pwLabel.textContent = '🔐 Create Your Password (first time)';
+    pwInput.placeholder = 'Choose a password (min 4 characters)';
+    pwConfirmGroup.style.display = '';
+  } else {
+    pwLabel.textContent = 'Password';
+    pwInput.placeholder = 'Enter your password';
+    pwConfirmGroup.style.display = 'none';
+  }
+  pwInput.focus();
 }
 
 // When a name is selected: pull server passwords then show correct password UI
@@ -1511,14 +1568,39 @@ async function staffLogin() {
 }
 
 async function managerLogin() {
-  await syncManagerPinFromServer(); // always get latest PIN
-  const pin    = document.getElementById('managerPin').value;
+  const name = document.getElementById('managerName').value;
+  const pin  = document.getElementById('managerPin').value;
+
+  if (!name) { showToast('Please select your name'); return; }
+  if (!pin)  { showToast('Please enter your password'); return; }
+
+  await syncManagerPinFromServer();
   const stored = getLocalManagerPin();
-  if (pin !== stored) {
-    showToast('❌ Incorrect PIN');
-    document.getElementById('managerPin').value = '';
-    return;
+  const isFirstTime = (stored === '1234' || !stored);
+
+  if (isFirstTime) {
+    // First-time setup — confirm and save new password
+    const confirm = document.getElementById('managerPinConfirm').value;
+    if (!confirm) { showToast('Please confirm your password'); return; }
+    if (pin !== confirm) {
+      showToast('❌ Passwords do not match');
+      document.getElementById('managerPinConfirm').value = '';
+      return;
+    }
+    if (pin.length < 4) { showToast('Password must be at least 4 characters'); return; }
+    saveLocalManagerPin(pin);
+    await pushManagerPinToServer(pin);
+    showToast('✅ Manager password created and synced to all devices');
+  } else {
+    // Returning manager — verify
+    if (pin !== stored) {
+      showToast('❌ Incorrect password');
+      document.getElementById('managerPin').value = '';
+      document.getElementById('managerPin').focus();
+      return;
+    }
   }
+
   logActivity('manager_login', 'Manager', '', 'Manager logged in to dashboard');
   currentUser = { name: 'Manager', role: 'manager' };
   showScreen('screen-manager');
@@ -1536,24 +1618,24 @@ function openChangeManagerPin() {
   modal.innerHTML = `
     <div style="background:white;border-radius:14px;width:100%;max-width:360px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
       <div style="background:linear-gradient(135deg,#1a3d1f,#2e7d32);color:white;padding:1rem 1.25rem;display:flex;justify-content:space-between;align-items:center;">
-        <div style="font-weight:700;">🔐 Change Manager PIN</div>
+        <div style="font-weight:700;">🔐 Change My Password</div>
         <button onclick="document.getElementById('managerPinModal').remove()" style="background:rgba(255,255,255,0.2);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;">✕</button>
       </div>
       <div style="padding:1.25rem;">
-        <div style="font-size:0.82rem;color:#555;margin-bottom:1rem;">New PIN will sync to all devices automatically.</div>
+        <div style="font-size:0.82rem;color:#555;margin-bottom:1rem;">New password will sync to all devices automatically.</div>
         <div style="margin-bottom:0.75rem;">
-          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">New PIN</label>
-          <input type="password" id="newManagerPin" placeholder="Enter new PIN" maxlength="12"
+          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">New Password</label>
+          <input type="password" id="newManagerPin" placeholder="Enter new password" maxlength="20"
             style="width:100%;border:1.5px solid #c8e6c9;border-radius:8px;padding:0.5rem 0.75rem;font-size:0.9rem;box-sizing:border-box;">
         </div>
         <div style="margin-bottom:1rem;">
-          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">Confirm PIN</label>
-          <input type="password" id="newManagerPinConfirm" placeholder="Re-enter new PIN" maxlength="12"
+          <label style="font-size:0.8rem;font-weight:700;color:#333;display:block;margin-bottom:4px;">Confirm Password</label>
+          <input type="password" id="newManagerPinConfirm" placeholder="Re-enter new password" maxlength="20"
             style="width:100%;border:1.5px solid #c8e6c9;border-radius:8px;padding:0.5rem 0.75rem;font-size:0.9rem;box-sizing:border-box;"
             onkeydown="if(event.key==='Enter') saveManagerPin()">
         </div>
         <button onclick="saveManagerPin()" style="width:100%;background:linear-gradient(135deg,#1a3d1f,#2e7d32);color:white;border:none;border-radius:8px;padding:0.75rem;font-weight:700;font-size:0.95rem;cursor:pointer;">
-          ✅ Save & Sync PIN
+          ✅ Save & Sync Password
         </button>
       </div>
     </div>`;
@@ -1733,13 +1815,22 @@ function setupSync() {
 function logout() {
   stopManagerNotifPoll();
   currentUser = null;
+  // Clear staff form
   document.getElementById('staffName').value = '';
   document.getElementById('staffZone').value = '';
   document.getElementById('staffPassword').value = '';
   document.getElementById('staffPasswordConfirm').value = '';
   document.getElementById('staffPasswordGroup').style.display = 'none';
   document.getElementById('staffPasswordConfirmGroup').style.display = 'none';
+  // Clear manager form
+  document.getElementById('managerName').value = '';
   document.getElementById('managerPin').value = '';
+  document.getElementById('managerPinConfirm').value = '';
+  document.getElementById('managerPasswordGroup').style.display = 'none';
+  document.getElementById('managerPasswordConfirmGroup').style.display = 'none';
+  // Return to staff view
+  document.getElementById('staff-login').style.display = '';
+  document.getElementById('manager-login').style.display = 'none';
   showScreen('screen-login');
 }
 
