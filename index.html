@@ -1423,6 +1423,43 @@ async function pushManagerPinToServer(pin) {
   } catch(e) { /* offline */ }
 }
 
+// ── PLANTING DATE SYNC ───────────────────────────────────────
+// Push all planting dates to server
+async function pushPlantingDatesToServer(dates) {
+  const url = getSyncUrl();
+  if (!url || !navigator.onLine) return;
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'savePlantingDates', dates })
+    });
+  } catch(e) { /* offline — will retry */ }
+}
+
+// Pull planting dates from server and merge into local
+async function syncPlantingDatesFromServer() {
+  const url = getSyncUrl();
+  if (!url || !navigator.onLine) return;
+  try {
+    const res = await fetch(url + '?action=getPlantingDates');
+    const json = await res.json();
+    if (json.dates && Object.keys(json.dates).length > 0) {
+      // Server wins — it is set by manager and is authoritative
+      const local = getPlantingDates();
+      // Merge: server overrides local, but keep local-only entries too
+      const merged = Object.assign({}, local, json.dates);
+      // Remove entries where server explicitly cleared (empty string)
+      Object.keys(json.dates).forEach(k => {
+        if (!json.dates[k]) delete merged[k];
+      });
+      savePlantingDates(merged);
+      return true; // dates were updated
+    }
+  } catch(e) { /* offline */ }
+  return false;
+}
+
 // Log activity event to server (for manager notifications)
 async function logActivity(type, worker, zone, detail) {
   const url = getSyncUrl();
@@ -1607,6 +1644,10 @@ async function staffLogin() {
   currentUser = { name, role: 'staff', zone };
   showScreen('screen-home');
   renderHome();
+  // Pull latest planting dates so the schedule reminder on home screen is accurate
+  syncPlantingDatesFromServer().then(updated => {
+    if (updated) renderHomeScheduleReminder();
+  });
 }
 
 async function managerLogin() {
@@ -1846,10 +1887,18 @@ function setupSync() {
   );
   if (url && url.startsWith('https://')) {
     localStorage.setItem('dv_sync_url', url);
-    showToast('✅ Sync URL saved! Syncing passwords and reports...');
+    showToast('✅ Sync URL saved! Syncing all data...');
     syncPasswordsFromServer();
     syncManagerPinFromServer();
     syncPending();
+    // Push any local planting dates to server, then pull server dates
+    const localDates = getPlantingDates();
+    if (Object.keys(localDates).length > 0) {
+      pushPlantingDatesToServer(localDates);
+    }
+    syncPlantingDatesFromServer().then(updated => {
+      if (updated && currentUser?.role === 'manager') renderDashboard();
+    });
   } else if (url !== null) {
     showToast('⚠️ Invalid URL — must start with https://');
   }
@@ -2399,6 +2448,11 @@ function setFilter(zone, btn) {
 function renderDashboard() {
   document.getElementById('mgrDateLabel').textContent = `Live view · ${today()}`;
 
+  // Silently sync planting dates from server on every dashboard load
+  syncPlantingDatesFromServer().then(updated => {
+    if (updated) renderScheduleCards(); // re-render if dates changed
+  });
+
   const allReports = getReports();
   const todayR = allReports.filter(r => r.date === todayKey());
   const filtered = currentFilter === 'all' ? todayR : todayR.filter(r => r.zone === currentFilter);
@@ -2518,7 +2572,11 @@ function showToast(msg) {
 }
 
 // Offline detection
-window.addEventListener('online',  () => { document.getElementById('offlineBanner').classList.remove('show'); syncPending(); });
+window.addEventListener('online',  () => {
+  document.getElementById('offlineBanner').classList.remove('show');
+  syncPending();
+  syncPlantingDatesFromServer(); // pull planting dates when coming back online
+});
 window.addEventListener('offline', () => { document.getElementById('offlineBanner').classList.add('show'); });
 if (!navigator.onLine) document.getElementById('offlineBanner').classList.add('show');
 
@@ -2611,19 +2669,21 @@ function savePlantingDateField(zoneId, value) {
     delete dates[zoneId];
   }
   savePlantingDates(dates);
-  // Refresh week label in modal
-  const week = getGrowthWeek(zoneId);
+  // Push all dates to server immediately
+  pushPlantingDatesToServer(dates);
   // Rebuild modal to update week labels
   openScheduleSetup();
-  showToast(`📅 Planting date saved for ${ZONES.find(z=>z.id===zoneId)?.label}`);
+  showToast(`📅 Planting date saved for ${ZONES.find(z=>z.id===zoneId)?.label} — syncing...`);
 }
 
 function clearPlantingDate(zoneId) {
   const dates = getPlantingDates();
   delete dates[zoneId];
   savePlantingDates(dates);
+  // Push updated dates to server
+  pushPlantingDatesToServer(dates);
   openScheduleSetup();
-  showToast('Date cleared');
+  showToast('Date cleared and synced');
 }
 
 function renderScheduleCards() {
@@ -2882,6 +2942,13 @@ function setTopbarLogo() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initImages();
+  // Pull planting dates from server on every app load so all devices stay in sync
+  syncPlantingDatesFromServer().then(updated => {
+    if (updated) {
+      // Re-render schedule if manager dashboard is visible
+      if (currentUser?.role === 'manager') renderScheduleCards();
+    }
+  });
 });
 
 // Init
